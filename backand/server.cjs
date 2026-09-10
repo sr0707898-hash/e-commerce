@@ -1,4 +1,5 @@
 const crypto = require("crypto");
+const dns = require("dns");
 const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
@@ -12,9 +13,17 @@ const adminEmail = process.env.ADMIN_EMAIL || "owner@example.com";
 const adminPassword = process.env.ADMIN_PASSWORD || "change-this-password";
 const tokenSecret = process.env.ADMIN_TOKEN_SECRET || "local-development-token-secret";
 
-mongoose.connect(process.env.MONGO_URI || "mongodb://localhost:27017/register")
+dns.setServers([
+  '1.1.1.1', // Cloudflare
+  '8.8.8.8'  // Google
+]);
+
+mongoose.connect(process.env.MONGODB_URI)
   .then(() => console.log("MongoDB connected"))
-  .catch((error) => console.error("MongoDB connection failed", error.message));
+  .catch((error) =>
+    console.error("MongoDB connection failed", error.message)
+  );
+
 
 server.use(cors({ origin: process.env.CLIENT_ORIGIN || "http://localhost:5173" }));
 server.use(express.json());
