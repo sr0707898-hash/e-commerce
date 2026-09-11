@@ -2,7 +2,8 @@ import { spawn } from "node:child_process";
 import { existsSync } from "node:fs";
 
 const npmCommand = process.platform === "win32" ? "npm.cmd" : "npm";
-const serverScript = existsSync(".env") ? "server" : "server:no-env";
+const backendEnvPath = new URL("../../backand/.env", import.meta.url);
+const serverScript = existsSync(backendEnvPath) ? "server" : "server:no-env";
 const spawnOptions = { stdio: "inherit", shell: process.platform === "win32" };
 const server = spawn(npmCommand, ["run", serverScript], spawnOptions);
 const frontend = spawn(npmCommand, ["run", "dev", "--", "--open"], spawnOptions);

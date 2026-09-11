@@ -5,34 +5,28 @@ const RegisterSchema = new mongoose.Schema({
     type: String,
     required: true
   },
- 
   username: {
     type: String,
     required: true
   },
-   email: {
+  email: {
     type: String,
     required: true
   },
-    password: {
+  password: {
     type: String,
     required: true
   },
   phone: {
-    type: Number,
-    required: true
-  },
-  role: {
     type: String,
-    enum: ["customer"],
-    default: "customer"
+    required: true
   },
   role: {
     type: String,
     enum: ["customer"],
     default: "customer"
   }
-});
+}, { timestamps: true });
 
 const Register = mongoose.model("Register", RegisterSchema);
 module.exports = Register;

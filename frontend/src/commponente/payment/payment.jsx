@@ -2,15 +2,17 @@ import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { CartContext } from "../cardcontext/cartContext";
 
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+const USD_TO_INR = 83;
+
 const Payment = () => {
   const {
     cartItems,
     increaseQuantity,
     decreaseQuantity,
     removeFromCart,
+    clearCart,
   } = useContext(CartContext);
-
-  
 
   const navigate = useNavigate();
 
@@ -19,7 +21,10 @@ const Payment = () => {
   const [userDetails, setUserDetails] = useState({
     name: "",
     email: "",
-    address: "",
+    houseNo: "",
+    sectorColony: "",
+    district: "",
+    state: "",
   });
 
   // Total Price
@@ -28,6 +33,15 @@ const Payment = () => {
       total + Number(item.price) * item.quantity,
     0
   );
+  const totalPriceInr = totalPrice * USD_TO_INR;
+  const totalPriceInrLabel = new Intl.NumberFormat("en-IN", {
+    style: "currency",
+    currency: "INR",
+    maximumFractionDigits: 2,
+  }).format(totalPriceInr);
+  const upiQrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=${encodeURIComponent(
+    `upi://pay?pa=owner@grocify&pn=Grocify&am=${totalPriceInr.toFixed(2)}&cu=INR&tn=Grocify%20Order%20Payment`
+  )}`;
 
   // Input Change
   const handleChange = (e) => {
@@ -41,7 +55,6 @@ const Payment = () => {
   const handlePayment = (e) => {
     e.preventDefault();
 
-    // Login check
     const user = localStorage.getItem("user");
 
     if (!user) {
@@ -52,41 +65,71 @@ const Payment = () => {
       return;
     }
 
-    // Cart empty check
     if (cartItems.length === 0) {
       alert("Your cart is empty!");
       return;
     }
 
-    // Payment method check
     if (!paymentType) {
       alert("Please select payment method!");
       return;
     }
 
-    // User details check
-    if (
-      !userDetails.name ||
-      !userDetails.email ||
-      !userDetails.address
-    ) {
+    if (!userDetails.name || !userDetails.email || !userDetails.houseNo || !userDetails.sectorColony || !userDetails.district || !userDetails.state) {
       alert("Please fill all details!");
       return;
     }
 
-    // Payment success
+    const savedUser = JSON.parse(user);
+    const address = `${userDetails.houseNo}, ${userDetails.sectorColony}, ${userDetails.district}, ${userDetails.state}`;
+    const orderRecord = {
+      id: `GC-${crypto.randomUUID()}`,
+      customer: userDetails.name || savedUser.name || "Customer",
+      email: String(savedUser.email || userDetails.email || "").trim().toLowerCase(),
+      address,
+      houseNo: userDetails.houseNo,
+      sectorColony: userDetails.sectorColony,
+      district: userDetails.district,
+      state: userDetails.state,
+      phone: savedUser.phone || "",
+      items: cartItems.map((item) => ({
+        id: item.id,
+        name: item.name,
+        quantity: item.quantity,
+        price: Number(item.price),
+      })),
+      totalUSD: Number(totalPrice.toFixed(2)),
+      totalINR: Number(totalPriceInr.toFixed(2)),
+      paymentMethod: paymentType,
+      status: "Processing",
+      createdAt: new Date().toISOString(),
+      qrCode: paymentType === "UPI" ? upiQrUrl : "",
+    };
+
+    const existingOrders = JSON.parse(localStorage.getItem("grocify_orders") || "[]");
+    localStorage.setItem("grocify_orders", JSON.stringify([orderRecord, ...existingOrders]));
+    window.dispatchEvent(new Event("ordersUpdated"));
+
+    fetch(`${API_URL}/orders`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(orderRecord),
+    }).catch((error) => console.error("Order could not be saved to dashboard:", error));
+
+    clearCart();
+
     alert(
-      `Payment Successful!\nPayment Method: ${paymentType}\nAmount: $${totalPrice.toFixed(
-        2
-      )}`
+      `Payment Successful!\nPayment Method: ${paymentType}\nAmount: ${totalPriceInrLabel}`
     );
 
     console.log("Order Details:", {
-      user: JSON.parse(user),
+      user: savedUser,
       items: cartItems,
       total: totalPrice,
+      totalInr: totalPriceInr,
       paymentMethod: paymentType,
       customer: userDetails,
+      order: orderRecord,
     });
   };
 
@@ -215,6 +258,11 @@ const Payment = () => {
             </span>
 
           </div>
+
+          <div className="mt-5 rounded-2xl bg-orange-50 p-4">
+            <p className="text-sm text-slate-600">Total in India (INR)</p>
+            <p className="mt-2 text-2xl font-bold text-orange-600">{totalPriceInrLabel}</p>
+          </div>
         </div>
 
         {/* ================= PAYMENT FORM ================= */}
@@ -246,15 +294,13 @@ const Payment = () => {
               className="w-full p-3 mb-4 rounded-lg outline-none"
             />
 
-            {/* Address */}
-            <textarea
-              name="address"
-              value={userDetails.address}
-              onChange={handleChange}
-              placeholder="Address"
-              className="w-full p-3 mb-4 rounded-lg outline-none"
-              rows="4"
-            />
+            {/* Delivery Address */}
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+              <input required name="houseNo" value={userDetails.houseNo} onChange={handleChange} placeholder="House No." className="w-full p-3 rounded-lg outline-none" />
+              <input required name="sectorColony" value={userDetails.sectorColony} onChange={handleChange} placeholder="Sector / Colony" className="w-full p-3 rounded-lg outline-none" />
+              <input required name="district" value={userDetails.district} onChange={handleChange} placeholder="District" className="w-full p-3 rounded-lg outline-none" />
+              <input required name="state" value={userDetails.state} onChange={handleChange} placeholder="State" className="w-full p-3 rounded-lg outline-none" />
+            </div>
 
             {/* Payment Method */}
             <h3 className="font-bold text-lg mb-3">
@@ -322,12 +368,27 @@ const Payment = () => {
 
             </label>
 
-            {/* Pay Button */}
+            {paymentType === "UPI" && (
+              <div className="mt-5 rounded-2xl bg-white p-4 text-center">
+                <p className="mb-3 text-sm font-semibold text-slate-700">Scan QR to pay {totalPriceInrLabel}</p>
+                <img
+                  src={upiQrUrl}
+                  alt="UPI QR code"
+                  className="mx-auto h-52 w-52 rounded-xl border border-slate-200 bg-white p-2"
+                />
+                <p className="mt-3 text-xs text-slate-500">UPI ID: owner@grocify</p>
+              </div>
+            )}
+
+            <div className="mt-5 rounded-2xl bg-white p-3 text-sm text-slate-600">
+              <p>Bill amount in INR: <span className="font-bold text-slate-900">{totalPriceInrLabel}</span></p>
+            </div>
+
             <button
               type="submit"
-              className="w-full bg-orange-500 hover:bg-orange-600 text-white py-3 rounded-lg font-bold"
+              className="mt-5 w-full bg-orange-500 hover:bg-orange-600 text-white py-3 rounded-lg font-bold"
             >
-              Pay ${totalPrice.toFixed(2)}
+              Pay {totalPriceInrLabel}
             </button>
 
           </form>

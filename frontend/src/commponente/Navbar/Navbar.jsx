@@ -51,6 +51,15 @@ const Navbar=()=>{
  const [showMenu,setShowMenu]=useState(false);
  const [isScrolled,setIsScrolled]=useState(false);
  const [searchText,setSearchText]=useState("");
+ const [currentUser,setCurrentUser]=useState(()=>JSON.parse(localStorage.getItem("user") || "null"));
+ const [showLoginNotice,setShowLoginNotice]=useState(()=>!localStorage.getItem("user")&&!sessionStorage.getItem("loginNoticeClosed"));
+ const getUserOrderCount = () => {
+  const savedUser = JSON.parse(localStorage.getItem("user") || "null");
+  if (!savedUser?.email) return 0;
+  const orders = JSON.parse(localStorage.getItem("grocify_orders") || "[]");
+  return orders.filter((order) => order.email?.toLowerCase() === savedUser.email.toLowerCase() || order.customer === savedUser.name).length;
+ };
+ const [orderCount,setOrderCount]=useState(getUserOrderCount);
  const {cartItems}=useContext(CartContext);
  const navigate=useNavigate();
 
@@ -58,6 +67,26 @@ const Navbar=()=>{
   const scroll=()=>setIsScrolled(window.scrollY>10);
   window.addEventListener("scroll",scroll);
   return()=>window.removeEventListener("scroll",scroll);
+ },[]);
+
+ useEffect(()=>{
+  const updateOrderCount=()=>setOrderCount(getUserOrderCount());
+  window.addEventListener("storage",updateOrderCount);
+  window.addEventListener("ordersUpdated",updateOrderCount);
+  return()=>{
+   window.removeEventListener("storage",updateOrderCount);
+   window.removeEventListener("ordersUpdated",updateOrderCount);
+  };
+ },[]);
+
+ useEffect(()=>{
+  const updateUser=()=>setCurrentUser(JSON.parse(localStorage.getItem("user") || "null"));
+  window.addEventListener("storage",updateUser);
+  window.addEventListener("authUpdated",updateUser);
+  return()=>{
+   window.removeEventListener("storage",updateUser);
+   window.removeEventListener("authUpdated",updateUser);
+  };
  },[]);
 
  const products = useProducts();
@@ -70,6 +99,21 @@ const Navbar=()=>{
   setSearchText("");
   setShowMenu(false);
   navigate("/allproducts",{state:{searchProduct:p.name}});
+ };
+
+ const closeLoginNotice=()=>{
+  sessionStorage.setItem("loginNoticeClosed","true");
+  setShowLoginNotice(false);
+ };
+
+ const handleLogout=()=>{
+  localStorage.removeItem("user");
+  sessionStorage.removeItem("loginNoticeClosed");
+  setCurrentUser(null);
+  setOrderCount(0);
+  setShowLoginNotice(true);
+  window.dispatchEvent(new Event("authUpdated"));
+  navigate("/");
  };
 
  return(
@@ -96,18 +140,14 @@ const Navbar=()=>{
       productClick={productClick}
      />
 
-     <Link to="/selectitems">
+    <Link to="/orders" className="relative" aria-label="My orders">
       <i className="bi bi-heart-fill text-xl"></i>
+     {orderCount>0&&<span className="absolute -top-3 -right-3 bg-red-500 text-white text-xs font-bold w-5 h-5 rounded-full flex items-center justify-center">{orderCount}</span>}
      </Link>
 
     <Cart cartItems={cartItems}/>
 
-     <Link to="/login">
-      <button className="h-10 px-4 flex items-center gap-1 border-2 bg-blue-100 hover:bg-blue-500 hover:text-white rounded-full">
-       <IoMdContact className="text-2xl"/>
-       Login
-      </button>
-     </Link>
+    {currentUser ? <button type="button" onClick={handleLogout} className="h-10 px-4 flex items-center gap-1 border-2 bg-red-100 text-red-700 hover:bg-red-500 hover:text-white rounded-full"><IoMdContact className="text-2xl"/>Logout</button> : <Link to="/login"><button className="h-10 px-4 flex items-center gap-1 border-2 bg-blue-100 hover:bg-blue-500 hover:text-white rounded-full"><IoMdContact className="text-2xl"/>Login</button></Link>}
     </div>
 
     <div className="flex lg:hidden items-center gap-2 flex-1 min-w-0 justify-end">
@@ -120,8 +160,9 @@ const Navbar=()=>{
       productClick={productClick}
      />
 
-      <Link to="/selectitems">
+      <Link to="/orders" className="relative" aria-label="My orders">
       <i className="bi bi-heart-fill text-xl"></i>
+      {orderCount>0&&<span className="absolute -top-3 -right-3 bg-red-500 text-white text-xs font-bold w-5 h-5 rounded-full flex items-center justify-center">{orderCount}</span>}
      </Link>
 
     <Cart cartItems={cartItems}/>
@@ -142,15 +183,22 @@ const Navbar=()=>{
 
 
 
-      <Link to="/login" onClick={()=>setShowMenu(false)}>
-       <button className="w-full h-10 flex items-center justify-center gap-1 border-2 bg-blue-100 hover:bg-blue-500 hover:text-white rounded-full">
-        <IoMdContact className="text-2xl"/>
-        Login
-       </button>
-      </Link>
+      {currentUser ? <button type="button" onClick={()=>{ handleLogout(); setShowMenu(false); }} className="w-full h-10 flex items-center justify-center gap-1 border-2 bg-red-100 text-red-700 hover:bg-red-500 hover:text-white rounded-full"><IoMdContact className="text-2xl"/>Logout</button> : <Link to="/login" onClick={()=>setShowMenu(false)}><button className="w-full h-10 flex items-center justify-center gap-1 border-2 bg-blue-100 hover:bg-blue-500 hover:text-white rounded-full"><IoMdContact className="text-2xl"/>Login</button></Link>}
      </div>
     </div>
    )}
+
+    {showLoginNotice&&(
+     <div className="fixed inset-0 z-100 flex items-center justify-center bg-slate-950/40 px-4">
+      <div className="relative w-full max-w-md rounded-2xl bg-white p-6 text-center shadow-2xl">
+      <button type="button" onClick={closeLoginNotice} aria-label="Close login message" className="absolute right-4 top-3 text-xl text-slate-400 hover:text-slate-700">&times;</button>
+      <p className="text-sm font-semibold uppercase tracking-[0.16em] text-orange-500">Login required</p>
+      <h2 className="mt-2 text-2xl font-bold text-slate-900">Please login before ordering</h2>
+      <p className="mt-2 text-sm text-slate-500">You can browse the store, but an account is required to place an order.</p>
+      <Link to="/login" onClick={closeLoginNotice} className="mt-5 inline-block rounded-xl bg-orange-500 px-5 py-3 font-semibold text-white hover:bg-orange-600">Login now</Link>
+      </div>
+     </div>
+    )}
   </header>
  );
 };

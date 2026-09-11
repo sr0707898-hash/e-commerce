@@ -12,6 +12,9 @@ import CardContextProvider from "./commponente/cardcontext/cardcontext";
 import Cart from "./commponente/carts/carts";
 import SelectedItems from "./commponente/selectitems/selectitems";
 import Dashboard from "./commponente/dashboard/dashboard";
+import OrderDetails from "./commponente/dashboard/orderDetails";
+import OrdersPage from "./commponente/dashboard/ordersPage";
+import ProductsPage from "./commponente/dashboard/productsPage";
 function App() {
   const router = createBrowserRouter([
     {
@@ -69,6 +72,26 @@ function App() {
     {
       path: "/dashboard",
       element: <Dashboard />
+    },
+    {
+      path: "/dashboard/orders/:orderId",
+      element: <OrderDetails />
+    },
+    {
+      path: "/dashboard/orders",
+      element: <OrdersPage />
+    },
+    {
+      path: "/dashboard/products",
+      element: <ProductsPage />
+    },
+    {
+      path: "/orders/:orderId",
+      element: <OrderDetails />
+    },
+    {
+      path: "/orders",
+      element: <OrdersPage />
     },
 
     

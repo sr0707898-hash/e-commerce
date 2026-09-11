@@ -3,6 +3,8 @@ import { useState } from "react";
 import Background from "../../assets/all imges/background.jpg";
 import { useNavigate, useLocation } from "react-router-dom";
 
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+
 const Register = () => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -26,35 +28,34 @@ const Register = () => {
     e.preventDefault();
 
     try {
-      const response = await fetch(
-        "http://localhost:5000/Register",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(formData),
-        }
-      );
+      const response = await fetch(`${API_URL}/Register`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          ...formData,
+          phone: String(formData.phone),
+        }),
+      });
 
-      const data = await response.json();
+      const data = await response.json().catch(() => ({}));
 
-      alert(data.message);
-
-      if (response.ok) {
-        // Jis page se Register par aaye the
-        const redirectTo = location.state?.from || "/";
-
-        // Register ke baad Login page
-        navigate("/login", {
-          state: {
-            from: redirectTo,
-          },
-        });
+      if (!response.ok) {
+        throw new Error(data.message || "Registration failed");
       }
+
+      alert(data.message || "Registration successful");
+
+      const redirectTo = location.state?.from || "/";
+      navigate("/login", {
+        state: {
+          from: redirectTo,
+        },
+      });
     } catch (error) {
-      console.log(error);
-      alert("Backend server connect nahi ho raha");
+      console.error(error);
+      alert(error.message || "Backend server connect nahi ho raha");
     }
   };
 

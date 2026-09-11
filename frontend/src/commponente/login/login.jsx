@@ -1,11 +1,14 @@
 
 import { useState } from "react";
 import Background from "../../assets/all imges/background.jpg";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
 const Login = () => {
 
   const navigate = useNavigate();
+  const location = useLocation();
 
   const [formData, setFormData] = useState({
     email: "",
@@ -25,46 +28,34 @@ const Login = () => {
 
     try {
 
-      const response = await fetch(
-        "http://localhost:5000/login",
-        {
-          method: "POST",
+      const response = await fetch(`${API_URL}/login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: formData.email,
+          password: formData.password,
+        }),
+      });
 
-          headers: {
-            "Content-Type": "application/json",
-          },
+      const data = await response.json().catch(() => ({}));
 
-          body: JSON.stringify({
-            email: formData.email,
-            password: formData.password,
-          }),
-        }
-      );
-
-      const data = await response.json();
-
-      alert(data.message);
-
-      if (response.ok) {
-
-        console.log("User Login:", data.user);
-
-        // Login user ko browser me save karo
-        localStorage.setItem(
-          "user",
-          JSON.stringify(data.user)
-        );
-
-        // Login ke baad home page
-        navigate("/");
+      if (!response.ok) {
+        throw new Error(data.message || "Login failed");
       }
 
+      alert(data.message || "Login successful");
+
+      localStorage.setItem("user", JSON.stringify(data.user));
+      window.dispatchEvent(new Event("authUpdated"));
+
+      const redirectTo = location.state?.from || "/";
+      navigate(redirectTo);
+
     } catch (error) {
-
-      console.log(error);
-
-      alert("Backend server connect nahi ho raha");
-
+      console.error(error);
+      alert(error.message || "Backend server connect nahi ho raha");
     }
   };
 
