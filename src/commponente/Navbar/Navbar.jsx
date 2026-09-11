@@ -75,7 +75,7 @@ const Navbar=()=>{
  return(
   <header className={`fixed top-0 left-0 right-0 bg-white z-50 ${isScrolled?"shadow-lg":"shadow-sm"}`}>
 
-   <nav className="max-w-350 mx-auto px-3 sm:px-6 lg:px-10 h-18.75 md:h-22.5 flex items-center gap-3">
+    <nav className="max-w-350 mx-auto px-3 sm:px-6 lg:px-10 min-h-18.75 md:min-h-22.5 py-3 flex items-center gap-2 sm:gap-3">
 
     <Link to="/" className="text-xl sm:text-2xl md:text-4xl font-bold shrink-0">
      Gr<span className="text-orange-500">O</span>cify

@@ -91,9 +91,9 @@ const Payment = () => {
   };
 
   return (
-    <section className="max-w-[1200px] mx-auto px-5 py-10">
+    <section className="w-full max-w-[1200px] mx-auto px-4 py-8 sm:px-5 sm:py-10">
 
-      <h1 className="text-4xl font-bold mb-10">
+      <h1 className="text-3xl sm:text-4xl font-bold mb-8 sm:mb-10">
         Payment
       </h1>
 
@@ -218,7 +218,7 @@ const Payment = () => {
         </div>
 
         {/* ================= PAYMENT FORM ================= */}
-        <div className="bg-zinc-100 p-6 rounded-xl">
+        <div className="bg-zinc-100 p-4 sm:p-6 rounded-xl">
 
           <h2 className="text-2xl font-bold mb-6">
             Payment Details

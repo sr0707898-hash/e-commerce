@@ -35,9 +35,9 @@ const Cart = () => {
   }
 
   return (
-    <section className="max-w-[1200px] mx-auto px-5 py-10">
+    <section className="w-full max-w-[1200px] mx-auto px-4 py-8 sm:px-5 sm:py-10">
 
-      <h1 className="text-4xl font-bold mb-10">
+      <h1 className="text-3xl sm:text-4xl font-bold mb-8 sm:mb-10">
         Shopping Cart
       </h1>
 
@@ -49,14 +49,14 @@ const Cart = () => {
           {cartItems.map((item) => (
             <div
               key={item.id}
-              className="flex flex-col md:flex-row items-center justify-between bg-zinc-100 p-5 rounded-xl gap-5"
+              className="flex flex-col items-stretch sm:flex-row sm:flex-wrap md:flex-nowrap sm:items-center justify-between bg-zinc-100 p-4 sm:p-5 rounded-xl gap-4 sm:gap-5"
             >
 
               {/* Image */}
               <img
                 src={item.image}
                 alt={item.name}
-                className="w-28 h-28 object-contain"
+                className="w-24 h-24 sm:w-28 sm:h-28 object-contain self-center sm:self-auto"
               />
 
               {/* Product Name */}
@@ -115,7 +115,7 @@ const Cart = () => {
         </div>
 
         {/* Summary */}
-        <div className="bg-zinc-100 p-6 rounded-xl h-fit">
+        <div className="bg-zinc-100 p-4 sm:p-6 rounded-xl h-fit">
 
           <h2 className="text-2xl font-bold mb-6">
             Order Summary

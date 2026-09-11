@@ -60,25 +60,25 @@ const Register = () => {
 
   return (
     <section
-      className="max-w-[1400px] mx-auto bg-no-repeat bg-contain h-170 my-1 bg-cover flex px-70 items-center"
+      className="min-h-screen max-w-350 mx-auto bg-no-repeat bg-cover bg-center flex items-center justify-center px-3 py-4 sm:px-5"
       style={{ backgroundImage: `url(${Background})` }}
     >
-      <div className="bg-zinc-900 rounded-2xl w-100">
+      <div className="w-full max-w-sm rounded-2xl bg-zinc-900">
 
-        <h2 className="text-zinc-100 flex justify-center pt-5 text-2xl">
+        <h2 className="text-zinc-100 flex justify-center pt-3 text-xl">
           Register
         </h2>
 
         <form
           onSubmit={handleRegister}
-          className="px-15 py-4 h-130"
+          className="px-4 py-2.5 sm:px-6 sm:py-3"
         >
-          <h1 className="text-zinc-100 py-2 text-2xl">
+          <h1 className="text-zinc-100 py-1 text-xl">
             New Customer
           </h1>
 
           {/* Full Name */}
-          <label className="text-zinc-100">
+          <label className="block text-sm text-zinc-100">
             Full Name
           </label>
 
@@ -89,13 +89,11 @@ const Register = () => {
             onChange={handleChange}
             placeholder="Name"
             required
-            className="h-[5vh] bg-zinc-100 my-2 px-2 rounded-xl w-70 outline-none"
+            className="h-10 w-full bg-zinc-100 my-1 px-3 rounded-xl outline-none"
           />
 
-          <br />
-
           {/* Username */}
-          <label className="text-zinc-100">
+          <label className="block text-sm text-zinc-100">
             Username
           </label>
 
@@ -106,13 +104,11 @@ const Register = () => {
             onChange={handleChange}
             placeholder="Username"
             required
-            className="h-[5vh] bg-zinc-100 my-2 px-2 rounded-xl w-70 outline-none"
+            className="h-10 w-full bg-zinc-100 my-1 px-3 rounded-xl outline-none"
           />
 
-          <br />
-
           {/* Email */}
-          <label className="text-zinc-100">
+          <label className="block text-sm text-zinc-100">
             Email
           </label>
 
@@ -123,13 +119,11 @@ const Register = () => {
             onChange={handleChange}
             placeholder="Email"
             required
-            className="h-[5vh] bg-zinc-100 my-2 px-2 rounded-xl w-70 outline-none"
+            className="h-10 w-full bg-zinc-100 my-1 px-3 rounded-xl outline-none"
           />
 
-          <br />
-
           {/* Password */}
-          <label className="text-zinc-100">
+          <label className="block text-sm text-zinc-100">
             Password
           </label>
 
@@ -140,13 +134,11 @@ const Register = () => {
             onChange={handleChange}
             placeholder="Password"
             required
-            className="h-[5vh] bg-zinc-100 my-2 px-2 rounded-xl w-70 outline-none"
+            className="h-10 w-full bg-zinc-100 my-1 px-3 rounded-xl outline-none"
           />
 
-          <br />
-
           {/* Mobile */}
-          <label className="text-zinc-100">
+          <label className="block text-sm text-zinc-100">
             Mobile No
           </label>
 
@@ -157,15 +149,13 @@ const Register = () => {
             onChange={handleChange}
             placeholder="Mobile Number"
             required
-            className="h-[5vh] bg-zinc-100 my-2 px-2 rounded-xl w-70 outline-none"
+            className="h-10 w-full bg-zinc-100 my-1 px-3 rounded-xl outline-none"
           />
-
-          <br />
 
           {/* Submit */}
           <button
             type="submit"
-            className="text-zinc-100 my-2 bg-blue-500 w-70 h-[40px] cursor-pointer hover:scale-105 rounded-xl outline-none"
+            className="h-10 w-full text-sm text-zinc-100 my-1 bg-blue-500 cursor-pointer hover:scale-105 rounded-xl outline-none"
           >
             Submit
           </button>
