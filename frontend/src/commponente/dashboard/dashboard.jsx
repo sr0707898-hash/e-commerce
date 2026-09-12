@@ -50,7 +50,7 @@ const statusStyles = {
   Processing: "bg-violet-50 text-violet-700",
 };
 
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+const API_URL = import.meta.env.VITE_API_URL || `http://${window.location.hostname}:5000`;
 const formatINR = (amount) => new Intl.NumberFormat("en-IN", { style: "currency", currency: "INR", maximumFractionDigits: 2 }).format(amount);
 const formatOrder = (order, index) => ({
   _id: order._id || "",

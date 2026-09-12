@@ -3,7 +3,7 @@ import { useState } from "react";
 import Background from "../../assets/all imges/background.jpg";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 
-const API_URL = import.meta.env.API_URL || "http://localhost:5000";
+const API_URL = import.meta.env.VITE_API_URL || `http://${window.location.hostname}:5000`;
 
 const Login = () => {
 

@@ -1,6 +1,7 @@
 const crypto = require("crypto");
 const dns = require("dns");
 const path = require("path");
+require("dotenv").config();
 
 
 
@@ -204,14 +205,24 @@ server.delete("/admin/products/:id", requireAdmin, async (req, res) => {
   }
 });
 
-mongoose
-  .connect(process.env.MONGODB_URI)
-  .then(() => {
-    console.log("MongoDB connected");
-  })
-  .catch((error) => {
-    console.error("MongoDB connection failed:", error.message);
+if (process.env.MONGODB_URI) {
+  mongoose
+    .connect(process.env.MONGODB_URI)
+    .then(() => {
+      console.log("MongoDB connected");
+    })
+    .catch((error) => {
+      console.error("MongoDB connection failed:", error.message);
+    });
+} else {
+  console.error("MongoDB connection skipped: set MONGODB_URI in backand/.env");
+}
+
+if (require.main === module) {
+  server.listen(port, "0.0.0.0", () => {
+    console.log(`API server running on port ${port}`);
   });
+}
 
 module.exports = server;
 
