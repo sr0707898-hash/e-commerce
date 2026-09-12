@@ -2,7 +2,7 @@ import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { CartContext } from "../cardcontext/cartContext";
 
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+const API_URL = import.meta.env.API_URL || "http://localhost:5000";
 const USD_TO_INR = 83;
 
 const Payment = () => {
@@ -266,7 +266,7 @@ const Payment = () => {
         </div>
 
         {/* ================= PAYMENT FORM ================= */}
-        <div className="bg-zinc-100 p-4 sm:p-6 rounded-xl">
+        <div className="bg-zinc-100 p-4 sm:p-6 rounded-xl text-zinc-900">
 
           <h2 className="text-2xl font-bold mb-6">
             Payment Details
@@ -281,7 +281,7 @@ const Payment = () => {
               value={userDetails.name}
               onChange={handleChange}
               placeholder="Full Name"
-              className="w-full p-3 mb-4 rounded-lg outline-none"
+              className="w-full p-3 mb-4 rounded-lg outline-none text-zinc-900"
             />
 
             {/* Email */}
@@ -291,15 +291,15 @@ const Payment = () => {
               value={userDetails.email}
               onChange={handleChange}
               placeholder="Email"
-              className="w-full p-3 mb-4 rounded-lg outline-none"
+              className="w-full p-3 mb-4 rounded-lg outline-none text-zinc-900"
             />
 
             {/* Delivery Address */}
-            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-              <input required name="houseNo" value={userDetails.houseNo} onChange={handleChange} placeholder="House No." className="w-full p-3 rounded-lg outline-none" />
-              <input required name="sectorColony" value={userDetails.sectorColony} onChange={handleChange} placeholder="Sector / Colony" className="w-full p-3 rounded-lg outline-none" />
-              <input required name="district" value={userDetails.district} onChange={handleChange} placeholder="District" className="w-full p-3 rounded-lg outline-none" />
-              <input required name="state" value={userDetails.state} onChange={handleChange} placeholder="State" className="w-full p-3 rounded-lg outline-none" />
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 text-zinc-900">
+              <input required name="houseNo" value={userDetails.houseNo} onChange={handleChange} placeholder="House No." className="w-full p-3 rounded-lg outline-none text-zinc-900" />
+              <input required name="sectorColony" value={userDetails.sectorColony} onChange={handleChange} placeholder="Sector / Colony" className="w-full p-3 rounded-lg outline-none text-zinc-900" />
+              <input required name="district" value={userDetails.district} onChange={handleChange} placeholder="District" className="w-full p-3 rounded-lg outline-none text-zinc-900" />
+              <input required name="state" value={userDetails.state} onChange={handleChange} placeholder="State" className="w-full p-3 rounded-lg outline-none text-zinc-900" />
             </div>
 
             {/* Payment Method */}

@@ -2,7 +2,7 @@ const crypto = require("crypto");
 const dns = require("dns");
 const path = require("path");
 
-module.paths.unshift(path.resolve(__dirname, "../frontend/node_modules"));
+
 
 const express = require("express");
 const cors = require("cors");
@@ -22,8 +22,6 @@ dns.setServers([
   '8.8.8.8'  // Google
 ]);
 
-const databaseConnection = mongoose.connect(process.env.MONGODB_URI)
-  .then(() => console.log("MongoDB connected"));
 
 
 server.use(cors({
@@ -206,11 +204,14 @@ server.delete("/admin/products/:id", requireAdmin, async (req, res) => {
   }
 });
 
-databaseConnection
+mongoose
+  .connect(process.env.MONGODB_URI)
   .then(() => {
-    server.listen(port, () => console.log(`API server started on port ${port}`));
+    console.log("MongoDB connected");
   })
   .catch((error) => {
-    console.error("MongoDB connection failed. API was not started:", error.message);
-    process.exitCode = 1;
+    console.error("MongoDB connection failed:", error.message);
   });
+
+module.exports = server;
+

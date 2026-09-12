@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import fallbackProducts from "./productList";
 
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+const API_URL = import.meta.env.API_URL || "http://localhost:5000";
 const CATALOG_OVERRIDES_KEY = "grocify_catalog_overrides";
 
 const getCatalogOverrides = () => {
