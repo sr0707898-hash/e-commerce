@@ -83,7 +83,7 @@ export default Testimonials
 const review =[
     {
         id: 1,
-        name: 'Sumit kumar',
+        name: 'Doraemon',
         Profession: 'food Blogger',
         rating: 3,
         para: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nam deleniti in dolore sint tenetur velit recusandae expedita, possimus fuga blanditiis.',
