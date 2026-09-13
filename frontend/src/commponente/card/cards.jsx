@@ -27,6 +27,11 @@ const Cards = ({ id, image, name, price }) => {
     navigate("/payment");
   };
 
+  const handleShopNow = () => {
+    handleAddToCart();
+    navigate("/payment");
+  };
+
   return (
     <div className="bg-zinc-100 p-5 rounded-xl">
 
@@ -83,7 +88,7 @@ const Cards = ({ id, image, name, price }) => {
 
           </div>
         ) : (
-          <Button content="Shop Now" />
+          <Button content="Shop Now" onClick={handleShopNow} />
         )}
 
       </div>
