@@ -1,8 +1,11 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
+import fallbackProducts from "../productList/productList";
 
 const API_URL = import.meta.env.VITE_API_URL || `http://${window.location.hostname}:5000`;
 const USD_TO_INR = 83;
+const fallbackImages = new Map(fallbackProducts.map((product) => [product.name.trim().toLowerCase(), product.image]));
+const getProductImage = (item) => item.image || fallbackImages.get(String(item.name || "").trim().toLowerCase()) || "";
 
 const OrderDetails = () => {
   const { orderId } = useParams();
@@ -75,10 +78,17 @@ const OrderDetails = () => {
           <div className="border-b border-slate-200 bg-slate-50 px-5 py-3 font-semibold text-slate-800">Items</div>
           <div className="divide-y divide-slate-200">
             {(order.items || []).map((item) => (
-              <div key={`${order.id}-${item.id || item.name}`} className="flex items-center justify-between px-5 py-4">
-                <div>
+              <div key={`${order.id}-${item.id || item.name}`} className="flex items-center justify-between gap-4 px-5 py-4">
+                <div className="flex min-w-0 items-center gap-4">
+                  {getProductImage(item) ? (
+                    <img src={getProductImage(item)} alt={item.name} className="h-20 w-20 shrink-0 rounded-lg bg-white object-contain p-1" />
+                  ) : (
+                    <div className="flex h-20 w-20 shrink-0 items-center justify-center rounded-lg bg-slate-100 text-xs text-slate-400">No image</div>
+                  )}
+                  <div>
                   <p className="font-medium text-slate-800">{item.name}</p>
                   <p className="text-sm text-slate-500">Qty: {item.quantity}</p>
+                  </div>
                 </div>
                 <div className="text-right"><p className="font-semibold text-slate-900">${Number(item.price || 0).toFixed(2)}</p><p className="text-sm text-slate-500">₹{(Number(item.price || 0) * USD_TO_INR).toLocaleString("en-IN", { maximumFractionDigits: 2 })}</p></div>
               </div>

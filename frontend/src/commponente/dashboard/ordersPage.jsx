@@ -68,7 +68,21 @@ const OrdersPage = () => {
                   <tr key={order.id} className="hover:bg-slate-50">
                     <td className="px-5 py-4 font-semibold text-slate-800">{order.id}</td>
                     <td className="px-5 py-4 text-slate-700">{order.customer}</td>
-                    <td className="px-5 py-4 text-slate-700">{(order.items || []).map((item) => `${item.name} x${item.quantity}`).join(", ") || "No items"}</td>
+                    <td className="px-5 py-4 text-slate-700">
+                      <div className="space-y-3">
+                        {(order.items || []).map((item) => (
+                          <div key={`${order.id}-${item.id || item.name}`} className="flex items-center gap-3">
+                            {item.image ? (
+                              <img src={item.image} alt={item.name} className="h-12 w-12 shrink-0 rounded-lg bg-white object-contain p-1" />
+                            ) : (
+                              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-slate-100 text-[10px] text-slate-400">No image</div>
+                            )}
+                            <span>{item.name} x{item.quantity}</span>
+                          </div>
+                        ))}
+                        {!order.items?.length && <span>No items</span>}
+                      </div>
+                    </td>
                     <td className="px-5 py-4 text-slate-700">₹{Number(order.totalINR || 0).toLocaleString("en-IN")}</td>
                     <td className="px-5 py-4">
                       <span className="rounded-full bg-orange-100 px-2.5 py-1 text-xs font-semibold text-orange-700">

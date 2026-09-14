@@ -58,6 +58,21 @@ const requireAdmin = (req, res, next) => {
   }
 };
 
+const addProductImagesToOrders = async (orders) => {
+  const products = await Product.find({}, "_id name image").lean();
+  const productsById = new Map(products.map((product) => [String(product._id), product]));
+  const productsByName = new Map(products.map((product) => [product.name.trim().toLowerCase(), product]));
+
+  return orders.map((order) => ({
+    ...order,
+    items: (order.items || []).map((item) => {
+      if (item.image) return item;
+      const product = productsById.get(String(item.id)) || productsByName.get(String(item.name || "").trim().toLowerCase());
+      return product?.image ? { ...item, image: product.image } : item;
+    }),
+  }));
+};
+
 server.get("/", (req, res) => res.send("Grocify API is working"));
 
 server.get("/products", async (req, res) => {
@@ -118,7 +133,7 @@ server.get("/orders", async (req, res) => {
     const email = String(req.query.email || "").trim().toLowerCase();
     if (!email) return res.status(400).json({ message: "Email is required" });
     const orders = await Order.find({ email: { $regex: `^${email.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}$`, $options: "i" } }).sort({ createdAt: -1 }).lean();
-    res.json({ orders });
+    res.json({ orders: await addProductImagesToOrders(orders) });
   } catch (error) {
     res.status(500).json({ message: "Could not load orders", error: error.message });
   }
@@ -130,7 +145,7 @@ server.get("/orders/:id", async (req, res) => {
     if (!email) return res.status(400).json({ message: "Email is required" });
     const order = await Order.findOne({ id: req.params.id, email: { $regex: `^${email.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}$`, $options: "i" } }).lean();
     if (!order) return res.status(404).json({ message: "Order not found" });
-    res.json({ order });
+    res.json({ order: (await addProductImagesToOrders([order]))[0] });
   } catch (error) {
     res.status(500).json({ message: "Could not load order", error: error.message });
   }
@@ -152,7 +167,7 @@ server.get("/admin/users", requireAdmin, async (req, res) => {
 
 server.get("/admin/orders", requireAdmin, async (req, res) => {
   const orders = await Order.find().sort({ createdAt: -1 }).lean();
-  res.json({ orders });
+  res.json({ orders: await addProductImagesToOrders(orders) });
 });
 
 server.delete("/admin/orders/:id", requireAdmin, async (req, res) => {

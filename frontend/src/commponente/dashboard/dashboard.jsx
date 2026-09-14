@@ -278,7 +278,7 @@ function Dashboard() {
         <nav className="mt-3 space-y-1">
           <a href="#overview" className="flex items-center gap-3 rounded-xl bg-[#f5a623] px-3 py-3 text-sm font-semibold text-[#10251f]"><FiGrid /> Overview</a>
           <a href="#products" className="flex items-center gap-3 rounded-xl px-3 py-3 text-sm text-emerald-50/70 hover:bg-white/10 hover:text-white"><FiPackage /> Products</a>
-          <a href="#orders" className="flex items-center gap-3 rounded-xl px-3 py-3 text-sm text-emerald-50/70 hover:bg-white/10 hover:text-white"><FiShoppingCart /> Orders</a>
+          <Link to="/dashboard/orders" onClick={() => setMenuOpen(false)} className="flex items-center gap-3 rounded-xl px-3 py-3 text-sm text-emerald-50/70 hover:bg-white/10 hover:text-white"><FiShoppingCart /> Orders</Link>
           <a href="#customers" className="flex items-center gap-3 rounded-xl px-3 py-3 text-sm text-emerald-50/70 hover:bg-white/10 hover:text-white"><FiUsers /> Customers</a>
         </nav>
         <p className="mt-9 px-2 text-[10px] font-bold uppercase tracking-[0.2em] text-emerald-200/60">Manage</p>
@@ -296,7 +296,7 @@ function Dashboard() {
 
       <main className="lg:pl-64">
         <header className="sticky top-0 z-30 flex min-h-20 items-center justify-between gap-3 border-b border-slate-200 bg-[#f6f8fb]/90 px-4 py-3 backdrop-blur sm:px-5 md:px-8">
-          <div className="flex items-center gap-3"><button className="rounded-lg p-2 hover:bg-white lg:hidden" onClick={() => setMenuOpen(true)} aria-label="Open menu"><FiMenu /></button><div><p className="text-xs font-semibold uppercase tracking-[0.16em] text-orange-500">Monday, 7 September 2026</p><h1 className="mt-1 text-xl font-bold text-slate-950 md:text-2xl">Good morning, Riya</h1></div></div>
+          <div className="flex items-center gap-3"><button className="rounded-lg p-2 hover:bg-white lg:hidden" onClick={() => setMenuOpen(true)} aria-label="Open menu"><FiMenu /></button><div><p className="text-xs font-semibold uppercase tracking-[0.16em] text-orange-500">Monday, 7 September 2026</p><h1 className="mt-1 text-xl font-bold text-slate-950 md:text-2xl">Good morning, Sumit Ranoliya</h1></div></div>
           <div className="flex items-center gap-2 md:gap-4"><button className="hidden items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-500 md:flex"><FiSearch /> Search</button><button className="relative rounded-xl border border-slate-200 bg-white p-2.5 text-slate-600 hover:text-orange-500" aria-label="Notifications"><FiBell /><span className="absolute right-2 top-2 h-1.5 w-1.5 rounded-full bg-orange-500" /></button><div className="hidden h-8 w-px bg-slate-200 sm:block" /><div className="hidden text-right sm:block"><p className="text-sm font-semibold">Sumit Ranoliya</p><p className="text-xs text-slate-500">Administrator</p></div><div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#10251f] text-sm font-bold text-white">RK</div></div>
         </header>
 

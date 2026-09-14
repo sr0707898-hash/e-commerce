@@ -15,6 +15,7 @@ import Dashboard from "./commponente/dashboard/dashboard";
 import OrderDetails from "./commponente/dashboard/orderDetails";
 import OrdersPage from "./commponente/dashboard/ordersPage";
 import ProductsPage from "./commponente/dashboard/productsPage";
+import AdminOrdersPage from "./commponente/dashboard/adminOrdersPage";
 function App() {
   const router = createBrowserRouter([
     {
@@ -79,7 +80,7 @@ function App() {
     },
     {
       path: "/dashboard/orders",
-      element: <OrdersPage />
+      element: <AdminOrdersPage />
     },
     {
       path: "/dashboard/products",
