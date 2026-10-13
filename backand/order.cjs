@@ -20,6 +20,7 @@ const OrderSchema = new mongoose.Schema({
   totalUSD: { type: Number, required: true },
   totalINR: { type: Number, required: true },
   paymentMethod: { type: String, required: true },
+  paymentStatus: { type: String, enum: ["Pending", "Paid"], default: "Pending" },
   status: { type: String, default: "Processing" },
   qrCode: { type: String, default: "" },
 }, { timestamps: true });

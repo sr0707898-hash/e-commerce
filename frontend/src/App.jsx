@@ -16,6 +16,9 @@ import OrderDetails from "./commponente/dashboard/orderDetails";
 import OrdersPage from "./commponente/dashboard/ordersPage";
 import ProductsPage from "./commponente/dashboard/productsPage";
 import AdminOrdersPage from "./commponente/dashboard/adminOrdersPage";
+import SettingsPage from "./commponente/dashboard/settingsPage";
+import ProgressPage from "./commponente/progress/progressPage";
+import PaymentsPage from "./commponente/dashboard/paymentsPage";
 function App() {
   const router = createBrowserRouter([
     {
@@ -41,7 +44,11 @@ function App() {
         {
           path: "/allproducts",
           element: <Allproducts />,
-        }
+        },
+        {
+          path: "/progress",
+          element: <ProgressPage />,
+        },
 
         
       ]
@@ -83,8 +90,16 @@ function App() {
       element: <AdminOrdersPage />
     },
     {
+      path: "/dashboard/payments",
+      element: <PaymentsPage />
+    },
+    {
       path: "/dashboard/products",
       element: <ProductsPage />
+    },
+    {
+      path: "/dashboard/settings",
+      element: <SettingsPage />
     },
     {
       path: "/orders/:orderId",

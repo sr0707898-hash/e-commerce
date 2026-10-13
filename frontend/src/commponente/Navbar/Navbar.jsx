@@ -1,8 +1,10 @@
 import { useState,useEffect,useContext } from "react";
 import {IoMdContact} from "react-icons/io";
+import {FiGrid} from "react-icons/fi";
 import {Link,useNavigate} from "react-router-dom";
 import useProducts from "../productList/useProducts";
 import {CartContext} from "../cardcontext/cartContext";
+import { getProjectSettings } from "../dashboard/projectSettings";
 
 const Search=({mobile,searchText,setSearchText,filteredProducts,productClick})=>(
  <div className={`relative ${mobile?"flex-1 min-w-0":"w-55 xl:w-80"}`}>
@@ -52,6 +54,8 @@ const Navbar=()=>{
  const [isScrolled,setIsScrolled]=useState(false);
  const [searchText,setSearchText]=useState("");
  const [currentUser,setCurrentUser]=useState(()=>JSON.parse(localStorage.getItem("user") || "null"));
+ const [isAdmin,setIsAdmin]=useState(()=>Boolean(localStorage.getItem("adminToken") && !localStorage.getItem("user")));
+ const [projectSettings,setProjectSettings]=useState(getProjectSettings);
  const [showLoginNotice,setShowLoginNotice]=useState(()=>!localStorage.getItem("user")&&!sessionStorage.getItem("loginNoticeClosed"));
  const getUserOrderCount = () => {
   const savedUser = JSON.parse(localStorage.getItem("user") || "null");
@@ -80,13 +84,33 @@ const Navbar=()=>{
  },[]);
 
  useEffect(()=>{
-  const updateUser=()=>setCurrentUser(JSON.parse(localStorage.getItem("user") || "null"));
+  const updateUser=()=>{
+   const user=JSON.parse(localStorage.getItem("user") || "null");
+   setCurrentUser(user);
+   setIsAdmin(Boolean(localStorage.getItem("adminToken") && !user));
+  };
   window.addEventListener("storage",updateUser);
   window.addEventListener("authUpdated",updateUser);
   return()=>{
    window.removeEventListener("storage",updateUser);
    window.removeEventListener("authUpdated",updateUser);
   };
+ },[]);
+
+ useEffect(()=>{
+  const syncAdminStatus=()=>setIsAdmin(Boolean(localStorage.getItem("adminToken") && !localStorage.getItem("user")));
+  window.addEventListener("storage",syncAdminStatus);
+  window.addEventListener("adminAuthUpdated",syncAdminStatus);
+  return()=>{
+   window.removeEventListener("storage",syncAdminStatus);
+   window.removeEventListener("adminAuthUpdated",syncAdminStatus);
+  };
+ },[]);
+
+ useEffect(()=>{
+  const syncProjectSettings=()=>setProjectSettings(getProjectSettings());
+  window.addEventListener("projectSettingsUpdated",syncProjectSettings);
+  return()=>window.removeEventListener("projectSettingsUpdated",syncProjectSettings);
  },[]);
 
  const products = useProducts();
@@ -122,7 +146,7 @@ const Navbar=()=>{
     <nav className="max-w-350 mx-auto px-3 sm:px-6 lg:px-10 min-h-18.75 md:min-h-22.5 py-3 flex items-center gap-2 sm:gap-3">
 
     <Link to="/" className="text-xl sm:text-2xl md:text-4xl font-bold shrink-0">
-     Gr<span className="text-orange-500">O</span>cify
+     {projectSettings.storeName}
     </Link>
 
     <ul className="hidden lg:flex items-center gap-6 xl:gap-10 mx-auto">
@@ -130,6 +154,8 @@ const Navbar=()=>{
      <li><a href="#about" className="font-semibold hover:text-orange-500">About Us</a></li>
      <li><a href="#process" className="font-semibold hover:text-orange-500">Process</a></li>
      <li><a href="#contact" className="font-semibold hover:text-orange-500">Contact Us</a></li>
+    <li><Link to="/progress" className="font-semibold hover:text-orange-500">Our progress</Link></li>
+    {(isAdmin||!currentUser)&&<li><Link to="/dashboard" aria-label="Admin dashboard" title="Admin dashboard" className="flex h-10 w-10 items-center justify-center rounded-lg text-xl hover:bg-orange-50 hover:text-orange-600"><FiGrid /></Link></li>}
     </ul>
 
     <div className="hidden lg:flex items-center gap-5 ml-auto">
@@ -180,6 +206,8 @@ const Navbar=()=>{
       <a href="#about" onClick={()=>setShowMenu(false)}>About Us</a>
       <a href="#process" onClick={()=>setShowMenu(false)}>Process</a>
       <a href="#contact" onClick={()=>setShowMenu(false)}>Contact Us</a>
+      <Link to="/progress" onClick={()=>setShowMenu(false)}>Our progress</Link>
+      {(isAdmin||!currentUser)&&<Link to="/dashboard" aria-label="Admin dashboard" onClick={()=>setShowMenu(false)} className="flex items-center gap-2"><FiGrid />Admin dashboard</Link>}
 
 
 

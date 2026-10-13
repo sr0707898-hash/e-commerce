@@ -1,19 +1,25 @@
 import { IoIosArrowForward } from "react-icons/io";
+import { getProjectSettings } from "../dashboard/projectSettings";
+
 const Footer = () => {
+    const projectSettings = getProjectSettings();
+
   return (
     <footer className='bg-zinc-100 py-20 mt-20'>
         <div className=' flex flex-wrap max-w-[1400px] mx-auto px-10 gap-y-12'>
              <div className=' flex-1 basis-[300px]'>
                 <a href="#"className='text-4xl font-bold   '>
-                {/* <img src={logo} alt="" className='' /> */}
-                Gr<span className='text-orange-500 uppercase'>O</span>cify
+                                {projectSettings.storeName}
                       </a>
 
                     <p className='text-zinc-600 mt-6 max-w-[350px]'>
-                        Bred for a high content of baneficial substances. Qur products are a Lorem ipsum dolor sit amet. 
+                                                {projectSettings.about}
                     </p>
 
-                    <p className='text-zinc-800 mt-6'> 2025 &copy; All Rights Reserved</p>
+                                        <p className='text-zinc-800 mt-6'> {projectSettings.email}</p>
+                                        <p className='text-zinc-800 mt-2'> {projectSettings.phone}</p>
+                                        <p className='text-zinc-800 mt-2'> {projectSettings.address}</p>
+                                        <p className='text-zinc-800 mt-6'> 2025 &copy; All Rights Reserved</p>
                  
               </div>
 

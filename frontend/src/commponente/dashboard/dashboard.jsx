@@ -6,6 +6,7 @@ import {
   FiBell,
   FiChevronDown,
   FiChevronRight,
+  FiDollarSign,
   FiGrid,
   FiHelpCircle,
   FiLogOut,
@@ -105,7 +106,7 @@ function Dashboard() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [range, setRange] = useState("Last 7 days");
   const [activeTab, setActiveTab] = useState("All orders");
-  const [adminToken, setAdminToken] = useState(() => localStorage.getItem("adminToken"));
+  const [adminToken, setAdminToken] = useState(null);
   const [adminForm, setAdminForm] = useState({ email: "", password: "" });
   const [adminError, setAdminError] = useState("");
   const [users, setUsers] = useState([]);
@@ -122,14 +123,25 @@ function Dashboard() {
   const [productMessage, setProductMessage] = useState("");
   const [productForm, setProductForm] = useState({ name: "", category: "Fruits", price: "", stock: "", image: "" });
 
+  const syncAdminSession = (token) => {
+    if (token) localStorage.setItem("adminToken", token);
+    else localStorage.removeItem("adminToken");
+    setAdminToken(token);
+    window.dispatchEvent(new Event("adminAuthUpdated"));
+  };
+
+  useEffect(() => {
+    localStorage.removeItem("adminToken");
+    window.dispatchEvent(new Event("adminAuthUpdated"));
+  }, []);
+
   useEffect(() => {
     if (!adminToken) return;
     const loadAdminData = async () => {
       const headers = { Authorization: `Bearer ${adminToken}` };
       const [usersResponse, productsResponse, ordersResponse] = await Promise.all([fetch(`${API_URL}/admin/users`, { headers }), fetch(`${API_URL}/admin/products`, { headers }), fetch(`${API_URL}/admin/orders`, { headers })]);
       if (usersResponse.status === 401 || productsResponse.status === 401 || ordersResponse.status === 401) {
-        localStorage.removeItem("adminToken");
-        setAdminToken(null);
+        syncAdminSession(null);
         return;
       }
       if (!usersResponse.ok || !productsResponse.ok || !ordersResponse.ok) throw new Error("Could not load admin data");
@@ -147,8 +159,9 @@ function Dashboard() {
       const response = await fetch(`${API_URL}/admin/login`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ email: adminForm.email.trim(), password: adminForm.password.trim() }) });
       const data = await response.json().catch(() => ({}));
       if (!response.ok) return setAdminError(data.message);
-      localStorage.setItem("adminToken", data.token);
-      setAdminToken(data.token);
+      localStorage.removeItem("user");
+      window.dispatchEvent(new Event("authUpdated"));
+      syncAdminSession(data.token);
     } catch {
       setAdminError("Backend server connect nahi ho raha");
     }
@@ -163,8 +176,7 @@ function Dashboard() {
       const response = await fetch(`${API_URL}/admin/products${editingProduct ? `/${editingProduct._id}` : ""}`, { method: editingProduct ? "PUT" : "POST", headers: { "Content-Type": "application/json", Authorization: `Bearer ${adminToken}` }, body: JSON.stringify({ ...productForm, image: productForm.image.trim(), price: Number(productForm.price), stock: Number(productForm.stock) }) });
       const data = await response.json();
       if (response.status === 401) {
-        localStorage.removeItem("adminToken");
-        setAdminToken(null);
+        syncAdminSession(null);
         return;
       }
       if (!response.ok) return setAdminError(data.message || "Could not add product");
@@ -212,8 +224,7 @@ function Dashboard() {
       });
       const data = await response.json();
       if (response.status === 401) {
-        localStorage.removeItem("adminToken");
-        setAdminToken(null);
+        syncAdminSession(null);
         return;
       }
       if (!response.ok) return setAdminError(data.message || "Could not delete product");
@@ -238,8 +249,7 @@ function Dashboard() {
       const response = await fetch(`${API_URL}/admin/orders/${order.id}`, { method: "DELETE", headers: { Authorization: `Bearer ${adminToken}` } });
       const data = await response.json();
       if (response.status === 401) {
-        localStorage.removeItem("adminToken");
-        setAdminToken(null);
+        syncAdminSession(null);
         return;
       }
       if (!response.ok) return setAdminError(data.message || "Could not delete order");
@@ -278,7 +288,8 @@ function Dashboard() {
         <nav className="mt-3 space-y-1">
           <a href="#overview" className="flex items-center gap-3 rounded-xl bg-[#f5a623] px-3 py-3 text-sm font-semibold text-[#10251f]"><FiGrid /> Overview</a>
           <a href="#products" className="flex items-center gap-3 rounded-xl px-3 py-3 text-sm text-emerald-50/70 hover:bg-white/10 hover:text-white"><FiPackage /> Products</a>
-          <Link to="/dashboard/orders" onClick={() => setMenuOpen(false)} className="flex items-center gap-3 rounded-xl px-3 py-3 text-sm text-emerald-50/70 hover:bg-white/10 hover:text-white"><FiShoppingCart /> Orders</Link>
+          <a href="#orders" className="flex items-center gap-3 rounded-xl px-3 py-3 text-sm text-emerald-50/70 hover:bg-white/10 hover:text-white"><FiShoppingCart /> Orders</a>
+          <Link to="/dashboard/payments" className="flex items-center gap-3 rounded-xl px-3 py-3 text-sm text-emerald-50/70 hover:bg-white/10 hover:text-white"><FiDollarSign /> Payments</Link>
           <a href="#customers" className="flex items-center gap-3 rounded-xl px-3 py-3 text-sm text-emerald-50/70 hover:bg-white/10 hover:text-white"><FiUsers /> Customers</a>
         </nav>
         <p className="mt-9 px-2 text-[10px] font-bold uppercase tracking-[0.2em] text-emerald-200/60">Manage</p>
@@ -297,7 +308,7 @@ function Dashboard() {
       <main className="lg:pl-64">
         <header className="sticky top-0 z-30 flex min-h-20 items-center justify-between gap-3 border-b border-slate-200 bg-[#f6f8fb]/90 px-4 py-3 backdrop-blur sm:px-5 md:px-8">
           <div className="flex items-center gap-3"><button className="rounded-lg p-2 hover:bg-white lg:hidden" onClick={() => setMenuOpen(true)} aria-label="Open menu"><FiMenu /></button><div><p className="text-xs font-semibold uppercase tracking-[0.16em] text-orange-500">Monday, 7 September 2026</p><h1 className="mt-1 text-xl font-bold text-slate-950 md:text-2xl">Good morning, Sumit Ranoliya</h1></div></div>
-          <div className="flex items-center gap-2 md:gap-4"><button className="hidden items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-500 md:flex"><FiSearch /> Search</button><button className="relative rounded-xl border border-slate-200 bg-white p-2.5 text-slate-600 hover:text-orange-500" aria-label="Notifications"><FiBell /><span className="absolute right-2 top-2 h-1.5 w-1.5 rounded-full bg-orange-500" /></button><div className="hidden h-8 w-px bg-slate-200 sm:block" /><div className="hidden text-right sm:block"><p className="text-sm font-semibold">Sumit Ranoliya</p><p className="text-xs text-slate-500">Administrator</p></div><div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#10251f] text-sm font-bold text-white">RK</div></div>
+          <div className="flex items-center gap-2 md:gap-4"><button className="hidden items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-500 md:flex"><FiSearch /> Search</button><button className="relative rounded-xl border border-slate-200 bg-white p-2.5 text-slate-600 hover:text-orange-500" aria-label="Notifications"><FiBell /><span className="absolute right-2 top-2 h-1.5 w-1.5 rounded-full bg-orange-500" /></button><div className="hidden h-8 w-px bg-slate-200 sm:block" /><div className="hidden text-right sm:block"><p className="text-sm font-semibold">Sumit Ranoliya</p><p className="text-xs text-slate-500">Administrator</p></div><div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#10251f] text-sm font-bold text-white">SR</div></div>
         </header>
 
         <div id="overview" className="mx-auto max-w-360 space-y-6 p-5 md:p-8">
@@ -327,7 +338,7 @@ function Dashboard() {
 
           <section id="customers" className="rounded-2xl border border-slate-200 bg-white p-5 shadow-[0_8px_30px_rgba(15,23,42,0.04)] md:p-6"><div className="flex items-center justify-between"><div><h3 className="font-bold text-slate-950">Registered customers</h3><p className="mt-1 text-sm text-slate-500">Users who have created an account in your store</p></div><span className="rounded-full bg-sky-50 px-2.5 py-1 text-xs font-bold text-sky-600">{users.length} users</span></div><div className="mt-5 grid gap-3 md:grid-cols-2 xl:grid-cols-3">{users.slice(0, 6).map((user) => <div key={user._id} className="rounded-xl border border-slate-100 bg-slate-50 p-3"><p className="font-semibold text-slate-800">{user.name}</p><p className="mt-1 text-xs text-slate-500">{user.email}</p><p className="mt-1 text-xs text-slate-400">@{user.username}</p></div>)}{users.length === 0 && <p className="text-sm text-slate-400">No registered users yet.</p>}</div></section>
 
-          <section className="flex flex-col items-start justify-between gap-4 rounded-2xl bg-orange-100 p-5 sm:flex-row sm:items-center md:p-6"><div className="flex items-center gap-4"><div className="flex h-12 w-12 items-center justify-center rounded-xl bg-white text-orange-500"><FiHelpCircle className="text-xl" /></div><div><h3 className="font-bold text-slate-950">Need a hand with your store?</h3><p className="mt-1 text-sm text-slate-600">Your private store workspace is ready.</p></div></div><button onClick={() => { localStorage.removeItem("adminToken"); setAdminToken(null); }} className="rounded-xl bg-[#10251f] px-4 py-2.5 text-sm font-semibold text-white hover:bg-[#1d4437]">Sign out</button></section>
+          <section className="flex flex-col items-start justify-between gap-4 rounded-2xl bg-orange-100 p-5 sm:flex-row sm:items-center md:p-6"><div className="flex items-center gap-4"><div className="flex h-12 w-12 items-center justify-center rounded-xl bg-white text-orange-500"><FiHelpCircle className="text-xl" /></div><div><h3 className="font-bold text-slate-950">Need a hand with your store?</h3><p className="mt-1 text-sm text-slate-600">Your private store workspace is ready.</p></div></div><button onClick={() => syncAdminSession(null)} className="rounded-xl bg-[#10251f] px-4 py-2.5 text-sm font-semibold text-white hover:bg-[#1d4437]">Sign out</button></section>
         </div>
       </main>
       {productMessage && <div className="fixed bottom-6 right-6 z-50 rounded-xl bg-emerald-600 px-4 py-3 text-sm font-semibold text-white shadow-lg">{productMessage}</div>}

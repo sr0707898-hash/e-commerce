@@ -47,7 +47,9 @@ const Login = () => {
 
       alert(data.message || "Login successful");
 
+      localStorage.removeItem("adminToken");
       localStorage.setItem("user", JSON.stringify(data.user));
+      window.dispatchEvent(new Event("adminAuthUpdated"));
       window.dispatchEvent(new Event("authUpdated"));
 
       const redirectTo = location.state?.from || "/";

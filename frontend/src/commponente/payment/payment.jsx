@@ -95,13 +95,13 @@ const Payment = () => {
       items: cartItems.map((item) => ({
         id: item.id,
         name: item.name,
-        image: item.image,
         quantity: item.quantity,
         price: Number(item.price),
       })),
       totalUSD: Number(totalPrice.toFixed(2)),
       totalINR: Number(totalPriceInr.toFixed(2)),
       paymentMethod: paymentType,
+      paymentStatus: "Pending",
       status: "Processing",
       createdAt: new Date().toISOString(),
       qrCode: paymentType === "UPI" ? upiQrUrl : "",
@@ -120,7 +120,7 @@ const Payment = () => {
     clearCart();
 
     alert(
-      `Payment Successful!\nPayment Method: ${paymentType}\nAmount: ${totalPriceInrLabel}`
+      `Order placed. Payment is pending confirmation.\nPayment Method: ${paymentType}\nAmount: ${totalPriceInrLabel}`
     );
 
     console.log("Order Details:", {
@@ -135,7 +135,7 @@ const Payment = () => {
   };
 
   return (
-    <section className="min-h-screen w-full max-w-[1200px] mx-auto bg-white px-4 py-8 sm:px-5 sm:py-10">
+    <section className="w-full max-w-[1200px] mx-auto px-4 py-8 sm:px-5 sm:py-10">
 
       <h1 className="text-3xl sm:text-4xl font-bold mb-8 sm:mb-10">
         Payment
@@ -267,7 +267,7 @@ const Payment = () => {
         </div>
 
         {/* ================= PAYMENT FORM ================= */}
-        <div className="bg-zinc-100 p-4 sm:p-6 rounded-xl text-zinc-900 [color-scheme:light]">
+        <div className="bg-zinc-100 p-4 sm:p-6 rounded-xl text-zinc-900">
 
           <h2 className="text-2xl font-bold mb-6">
             Payment Details
@@ -282,7 +282,7 @@ const Payment = () => {
               value={userDetails.name}
               onChange={handleChange}
               placeholder="Full Name"
-              className="w-full bg-white p-3 mb-4 rounded-lg outline-none text-zinc-900 placeholder:text-zinc-500"
+              className="w-full p-3 mb-4 rounded-lg outline-none text-zinc-900"
             />
 
             {/* Email */}
@@ -292,15 +292,15 @@ const Payment = () => {
               value={userDetails.email}
               onChange={handleChange}
               placeholder="Email"
-              className="w-full bg-white p-3 mb-4 rounded-lg outline-none text-zinc-900 placeholder:text-zinc-500"
+              className="w-full p-3 mb-4 rounded-lg outline-none text-zinc-900"
             />
 
             {/* Delivery Address */}
             <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 text-zinc-900">
-              <input required name="houseNo" value={userDetails.houseNo} onChange={handleChange} placeholder="House No." className="w-full bg-white p-3 rounded-lg outline-none text-zinc-900 placeholder:text-zinc-500" />
-              <input required name="sectorColony" value={userDetails.sectorColony} onChange={handleChange} placeholder="Sector / Colony" className="w-full bg-white p-3 rounded-lg outline-none text-zinc-900 placeholder:text-zinc-500" />
-              <input required name="district" value={userDetails.district} onChange={handleChange} placeholder="District" className="w-full bg-white p-3 rounded-lg outline-none text-zinc-900 placeholder:text-zinc-500" />
-              <input required name="state" value={userDetails.state} onChange={handleChange} placeholder="State" className="w-full bg-white p-3 rounded-lg outline-none text-zinc-900 placeholder:text-zinc-500" />
+              <input required name="houseNo" value={userDetails.houseNo} onChange={handleChange} placeholder="House No." className="w-full p-3 rounded-lg outline-none text-zinc-900" />
+              <input required name="sectorColony" value={userDetails.sectorColony} onChange={handleChange} placeholder="Sector / Colony" className="w-full p-3 rounded-lg outline-none text-zinc-900" />
+              <input required name="district" value={userDetails.district} onChange={handleChange} placeholder="District" className="w-full p-3 rounded-lg outline-none text-zinc-900" />
+              <input required name="state" value={userDetails.state} onChange={handleChange} placeholder="State" className="w-full p-3 rounded-lg outline-none text-zinc-900" />
             </div>
 
             {/* Payment Method */}
