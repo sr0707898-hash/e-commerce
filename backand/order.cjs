@@ -21,6 +21,7 @@ const OrderSchema = new mongoose.Schema({
   totalINR: { type: Number, required: true },
   paymentMethod: { type: String, required: true },
   paymentStatus: { type: String, enum: ["Pending", "Paid"], default: "Pending" },
+  paymentReference: { type: String, default: "" },
   status: { type: String, default: "Processing" },
   qrCode: { type: String, default: "" },
 }, { timestamps: true });

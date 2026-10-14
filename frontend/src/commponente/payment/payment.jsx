@@ -1,9 +1,22 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { CartContext } from "../cardcontext/cartContext";
 
-const API_URL = import.meta.env.VITE_API_URL || `http://${window.location.hostname}:5000`;
+const API_URL = import.meta.env.VITE_API_URL || (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1" ? `http://${window.location.hostname}:5000` : "/api");
 const USD_TO_INR = 83;
+
+const loadRazorpayCheckout = () => new Promise((resolve) => {
+  if (window.Razorpay) {
+    resolve(true);
+    return;
+  }
+
+  const script = document.createElement("script");
+  script.src = "https://checkout.razorpay.com/v1/checkout.js";
+  script.onload = () => resolve(true);
+  script.onerror = () => resolve(false);
+  document.body.appendChild(script);
+});
 
 const Payment = () => {
   const {
@@ -17,6 +30,9 @@ const Payment = () => {
   const navigate = useNavigate();
 
   const [paymentType, setPaymentType] = useState("");
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [paymentError, setPaymentError] = useState("");
+  const [onlinePaymentsEnabled, setOnlinePaymentsEnabled] = useState(false);
 
   const [userDetails, setUserDetails] = useState({
     name: "",
@@ -26,6 +42,23 @@ const Payment = () => {
     district: "",
     state: "",
   });
+
+  useEffect(() => {
+    let active = true;
+
+    fetch(`${API_URL}/payments/razorpay/config`)
+      .then((response) => (response.ok ? response.json() : Promise.reject(new Error("Could not load payment options"))))
+      .then((config) => {
+        if (active) setOnlinePaymentsEnabled(Boolean(config.onlinePaymentsEnabled));
+      })
+      .catch(() => {
+        if (active) setOnlinePaymentsEnabled(false);
+      });
+
+    return () => {
+      active = false;
+    };
+  }, []);
 
   // Total Price
   const totalPrice = cartItems.reduce(
@@ -39,10 +72,6 @@ const Payment = () => {
     currency: "INR",
     maximumFractionDigits: 2,
   }).format(totalPriceInr);
-  const upiQrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=${encodeURIComponent(
-    `upi://pay?pa=owner@grocify&pn=Grocify&am=${totalPriceInr.toFixed(2)}&cu=INR&tn=Grocify%20Order%20Payment`
-  )}`;
-
   // Input Change
   const handleChange = (e) => {
     setUserDetails({
@@ -51,8 +80,13 @@ const Payment = () => {
     });
   };
 
-  // Payment
-  const handlePayment = (e) => {
+  const saveOrderLocally = (order) => {
+    const existingOrders = JSON.parse(localStorage.getItem("grocify_orders") || "[]");
+    localStorage.setItem("grocify_orders", JSON.stringify([order, ...existingOrders]));
+    window.dispatchEvent(new Event("ordersUpdated"));
+  };
+
+  const handlePayment = async (e) => {
     e.preventDefault();
 
     const user = localStorage.getItem("user");
@@ -104,34 +138,82 @@ const Payment = () => {
       paymentStatus: "Pending",
       status: "Processing",
       createdAt: new Date().toISOString(),
-      qrCode: paymentType === "UPI" ? upiQrUrl : "",
     };
 
-    const existingOrders = JSON.parse(localStorage.getItem("grocify_orders") || "[]");
-    localStorage.setItem("grocify_orders", JSON.stringify([orderRecord, ...existingOrders]));
-    window.dispatchEvent(new Event("ordersUpdated"));
+    setPaymentError("");
+    setIsProcessing(true);
 
-    fetch(`${API_URL}/orders`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(orderRecord),
-    }).catch((error) => console.error("Order could not be saved to dashboard:", error));
+    try {
+      if (paymentType === "Cash on Delivery") {
+        const response = await fetch(`${API_URL}/orders`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(orderRecord),
+        });
+        const data = await response.json().catch(() => ({}));
+        if (!response.ok) throw new Error(data.message || "Could not place this order");
 
-    clearCart();
+        const savedOrder = data.order || orderRecord;
+        saveOrderLocally(savedOrder);
+        clearCart();
+        setIsProcessing(false);
+        alert(`Order placed. Payment is due on delivery.\nAmount: ${totalPriceInrLabel}`);
+        return;
+      }
 
-    alert(
-      `Order placed. Payment is pending confirmation.\nPayment Method: ${paymentType}\nAmount: ${totalPriceInrLabel}`
-    );
+      const scriptLoaded = await loadRazorpayCheckout();
+      if (!scriptLoaded) throw new Error("Secure payment checkout could not be loaded. Please try again.");
 
-    console.log("Order Details:", {
-      user: savedUser,
-      items: cartItems,
-      total: totalPrice,
-      totalInr: totalPriceInr,
-      paymentMethod: paymentType,
-      customer: userDetails,
-      order: orderRecord,
-    });
+      const orderResponse = await fetch(`${API_URL}/payments/razorpay/order`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ orderRecord }),
+      });
+      const razorpayOrder = await orderResponse.json().catch(() => ({}));
+      if (!orderResponse.ok) throw new Error(razorpayOrder.message || "Could not start secure checkout");
+
+      const checkout = new window.Razorpay({
+        key: razorpayOrder.keyId,
+        amount: razorpayOrder.amount,
+        currency: razorpayOrder.currency,
+        name: "Grocify",
+        description: "Grocery order payment",
+        order_id: razorpayOrder.orderId,
+        prefill: { name: userDetails.name, email: orderRecord.email, contact: orderRecord.phone },
+        notes: { appOrderId: orderRecord.id },
+        method: { upi: paymentType === "UPI", card: paymentType === "Credit/Debit Card" },
+        theme: { color: "#c2410c" },
+        modal: { ondismiss: () => setIsProcessing(false) },
+        handler: async (paymentResponse) => {
+          try {
+            const verificationResponse = await fetch(`${API_URL}/payments/razorpay/verify`, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ ...paymentResponse, orderRecord: razorpayOrder.orderRecord }),
+            });
+            const verification = await verificationResponse.json().catch(() => ({}));
+            if (!verificationResponse.ok) throw new Error(verification.message || "Payment could not be verified");
+
+            saveOrderLocally(verification.order);
+            clearCart();
+            alert(`Payment successful and order placed.\nAmount: ${totalPriceInrLabel}`);
+          } catch (error) {
+            setPaymentError(`${error.message}. Payment reference: ${paymentResponse.razorpay_payment_id}`);
+          } finally {
+            setIsProcessing(false);
+          }
+        },
+      });
+
+      checkout.on("payment.failed", (event) => {
+        setPaymentError(event.error?.description || "Payment failed. No order was placed.");
+        setIsProcessing(false);
+      });
+      checkout.open();
+    } catch (error) {
+      setPaymentError(error.message || "Could not start payment");
+      setIsProcessing(false);
+    }
   };
 
   return (
@@ -320,45 +402,35 @@ const Payment = () => {
               Select Payment Method
             </h3>
 
-            {/* UPI */}
-            <label className="flex items-center gap-3 bg-white p-3 rounded-lg mb-3 cursor-pointer">
+            {onlinePaymentsEnabled ? (
+              <>
+                <label className="flex items-center gap-3 bg-white p-3 rounded-lg mb-3 cursor-pointer">
+                  <input
+                    type="radio"
+                    name="payment"
+                    value="UPI"
+                    checked={paymentType === "UPI"}
+                    onChange={(event) => setPaymentType(event.target.value)}
+                  />
+                  <span>UPI</span>
+                </label>
 
-              <input
-                type="radio"
-                name="payment"
-                value="UPI"
-                checked={paymentType === "UPI"}
-                onChange={(e) =>
-                  setPaymentType(e.target.value)
-                }
-              />
-
-              <span>
-                UPI
-              </span>
-
-            </label>
-
-            {/* Card */}
-            <label className="flex items-center gap-3 bg-white p-3 rounded-lg mb-3 cursor-pointer">
-
-              <input
-                type="radio"
-                name="payment"
-                value="Credit/Debit Card"
-                checked={
-                  paymentType === "Credit/Debit Card"
-                }
-                onChange={(e) =>
-                  setPaymentType(e.target.value)
-                }
-              />
-
-              <span>
-                Credit / Debit Card
-              </span>
-
-            </label>
+                <label className="flex items-center gap-3 bg-white p-3 rounded-lg mb-3 cursor-pointer">
+                  <input
+                    type="radio"
+                    name="payment"
+                    value="Credit/Debit Card"
+                    checked={paymentType === "Credit/Debit Card"}
+                    onChange={(event) => setPaymentType(event.target.value)}
+                  />
+                  <span>Credit / Debit Card</span>
+                </label>
+              </>
+            ) : (
+              <p role="status" className="mb-3 rounded-lg bg-amber-50 p-3 text-sm text-amber-900">
+                Online payments are temporarily unavailable. You can still place a Cash on Delivery order.
+              </p>
+            )}
 
             {/* COD */}
             <label className="flex items-center gap-3 bg-white p-3 rounded-lg mb-5 cursor-pointer">
@@ -381,17 +453,13 @@ const Payment = () => {
 
             </label>
 
-            {paymentType === "UPI" && (
-              <div className="mt-5 rounded-2xl bg-white p-4 text-center">
-                <p className="mb-3 text-sm font-semibold text-slate-700">Scan QR to pay {totalPriceInrLabel}</p>
-                <img
-                  src={upiQrUrl}
-                  alt="UPI QR code"
-                  className="mx-auto h-52 w-52 rounded-xl border border-slate-200 bg-white p-2"
-                />
-                <p className="mt-3 text-xs text-slate-500">UPI ID: owner@grocify</p>
-              </div>
+            {paymentType && paymentType !== "Cash on Delivery" && (
+              <p className="mt-5 rounded-xl bg-white p-4 text-sm text-slate-700">
+                Secure Razorpay checkout will open. UPI apps shown depend on your device and Razorpay account settings.
+              </p>
             )}
+
+            {paymentError && <p role="alert" className="mt-4 rounded-lg bg-red-50 p-3 text-sm text-red-700">{paymentError}</p>}
 
             <div className="mt-5 rounded-2xl bg-white p-3 text-sm text-slate-600">
               <p>Bill amount in INR: <span className="font-bold text-slate-900">{totalPriceInrLabel}</span></p>
@@ -399,9 +467,11 @@ const Payment = () => {
 
             <button
               type="submit"
-              className="mt-5 w-full bg-orange-700 hover:bg-orange-800 text-white py-3 rounded-lg font-bold"
+              disabled={isProcessing || cartItems.length === 0}
+              aria-busy={isProcessing}
+              className="mt-5 w-full bg-orange-700 hover:bg-orange-800 text-white py-3 rounded-lg font-bold disabled:cursor-not-allowed disabled:opacity-60"
             >
-              Pay {totalPriceInrLabel}
+              {isProcessing ? "Processing payment..." : paymentType === "Cash on Delivery" ? "Place order" : `Pay ${totalPriceInrLabel}`}
             </button>
 
           </form>
