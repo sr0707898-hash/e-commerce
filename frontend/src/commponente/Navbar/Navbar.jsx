@@ -143,9 +143,9 @@ const Navbar=()=>{
  return(
   <header className={`fixed top-0 left-0 right-0 bg-white z-50 ${isScrolled?"shadow-lg":"shadow-sm"}`}>
 
-    <nav className="max-w-350 mx-auto px-3 sm:px-6 lg:px-10 min-h-18.75 md:min-h-22.5 py-3 flex items-center gap-2 sm:gap-3">
+    <nav className="mx-auto flex min-h-18.75 max-w-350 flex-wrap items-center gap-2 px-3 py-3 sm:gap-3 sm:px-6 lg:min-h-22.5 lg:flex-nowrap lg:px-10">
 
-    <Link to="/" className="text-xl sm:text-2xl md:text-4xl font-bold shrink-0">
+    <Link to="/" className="shrink-0 text-xl font-bold sm:text-2xl md:text-4xl lg:mr-auto">
      {projectSettings.storeName}
     </Link>
 
@@ -158,7 +158,7 @@ const Navbar=()=>{
     {(isAdmin||!currentUser)&&<li><Link to="/dashboard" aria-label="Admin dashboard" title="Admin dashboard" className="flex h-10 w-10 items-center justify-center rounded-lg text-xl hover:bg-orange-50 hover:text-orange-600"><FiGrid /></Link></li>}
     </ul>
 
-    <div className="hidden lg:flex items-center gap-5 ml-auto">
+    <div className="hidden items-center gap-5 lg:ml-auto lg:flex">
      <Search
       searchText={searchText}
       setSearchText={setSearchText}
@@ -176,15 +176,7 @@ const Navbar=()=>{
     {currentUser ? <button type="button" onClick={handleLogout} className="h-10 px-4 flex items-center gap-1 border-2 bg-red-100 text-red-700 hover:bg-red-500 hover:text-white rounded-full"><IoMdContact className="text-2xl"/>Logout</button> : <Link to="/login"><button className="h-10 px-4 flex items-center gap-1 border-2 bg-blue-100 hover:bg-blue-500 hover:text-white rounded-full"><IoMdContact className="text-2xl"/>Login</button></Link>}
     </div>
 
-    <div className="flex lg:hidden items-center gap-2 flex-1 min-w-0 justify-end">
-
-     <Search
-      mobile
-      searchText={searchText}
-      setSearchText={setSearchText}
-      filteredProducts={filteredProducts}
-      productClick={productClick}
-     />
+    <div className="ml-auto flex shrink-0 items-center gap-3 lg:hidden">
 
       <Link to="/orders" className="relative" aria-label="My orders">
       <i className="bi bi-heart-fill text-xl"></i>
@@ -196,6 +188,16 @@ const Navbar=()=>{
      <button onClick={()=>setShowMenu(!showMenu)} className="text-2xl sm:text-3xl shrink-0 cursor-pointer">
       <i className={showMenu?"bi bi-x":"bi bi-list"}></i>
      </button>
+    </div>
+
+    <div className="w-full lg:hidden">
+     <Search
+      mobile
+      searchText={searchText}
+      setSearchText={setSearchText}
+      filteredProducts={filteredProducts}
+      productClick={productClick}
+     />
     </div>
    </nav>
 
