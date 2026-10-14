@@ -44,7 +44,7 @@ const SettingsPage = () => {
       <div className="mx-auto max-w-6xl">
         <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <p className="text-sm font-semibold uppercase tracking-[0.18em] text-orange-500">Settings</p>
+            <p className="text-sm font-semibold uppercase tracking-[0.18em] text-orange-700">Settings</p>
             <h1 className="mt-1 text-3xl font-bold">Project information</h1>
           </div>
           <Link
@@ -141,7 +141,7 @@ const SettingsPage = () => {
             <button
               type="submit"
               disabled={isSaving}
-              className="mt-6 w-full rounded-xl bg-orange-500 px-4 py-3 text-sm font-semibold text-white hover:bg-orange-600 disabled:cursor-not-allowed disabled:opacity-60"
+              className="mt-6 w-full rounded-xl bg-orange-700 px-4 py-3 text-sm font-semibold text-white hover:bg-orange-800 disabled:cursor-not-allowed disabled:opacity-60"
             >
               {isSaving ? "Saving..." : "Save project information"}
             </button>

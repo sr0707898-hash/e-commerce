@@ -44,7 +44,7 @@ const Cards = ({ id, image, name, price }) => {
 
         <button
           onClick={handleAddToCart}
-          className="px-4 py-3 rounded-lg bg-white hover:bg-orange-500 hover:text-white"
+          className="px-4 py-3 rounded-lg bg-white hover:bg-orange-700 hover:text-white"
         >
           <FaPlus />
         </button>
@@ -85,7 +85,7 @@ const Cards = ({ id, image, name, price }) => {
 
             <button
               onClick={handlePayment}
-              className="bg-orange-500 text-white px-6 py-2 rounded-lg hover:bg-orange-600"
+              className="bg-orange-700 text-white px-6 py-2 rounded-lg hover:bg-orange-800"
             >
               Go to Payment
             </button>

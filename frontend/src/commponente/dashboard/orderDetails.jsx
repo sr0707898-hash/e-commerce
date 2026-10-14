@@ -45,7 +45,7 @@ const OrderDetails = () => {
       <div className="mx-auto max-w-4xl rounded-2xl border border-slate-200 bg-white p-8 shadow-sm">
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <p className="text-sm font-semibold uppercase tracking-[0.2em] text-orange-500">Order details</p>
+            <p className="text-sm font-semibold uppercase tracking-[0.2em] text-orange-700">Order details</p>
             <h1 className="mt-2 text-3xl font-bold text-slate-900">{order.id}</h1>
           </div>
           <Link to="/orders" className="inline-flex items-center rounded-xl border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-700 hover:border-orange-200 hover:text-orange-600">

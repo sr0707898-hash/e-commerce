@@ -209,7 +209,7 @@ const Payment = () => {
                         onClick={() =>
                           increaseQuantity(item.id)
                         }
-                        className="w-9 h-9 bg-orange-500 text-white rounded-lg font-bold text-xl"
+                        className="w-9 h-9 bg-orange-700 text-white rounded-lg font-bold text-xl"
                       >
                         +
                       </button>
@@ -280,8 +280,10 @@ const Payment = () => {
           <form onSubmit={handlePayment}>
 
             {/* Name */}
+            <label htmlFor="checkout-name" className="sr-only">Full name</label>
             <input
               type="text"
+              id="checkout-name"
               name="name"
               value={userDetails.name}
               onChange={handleChange}
@@ -290,8 +292,10 @@ const Payment = () => {
             />
 
             {/* Email */}
+            <label htmlFor="checkout-email" className="sr-only">Email address</label>
             <input
               type="email"
+              id="checkout-email"
               name="email"
               value={userDetails.email}
               onChange={handleChange}
@@ -301,10 +305,14 @@ const Payment = () => {
 
             {/* Delivery Address */}
             <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 text-zinc-900">
-              <input required name="houseNo" value={userDetails.houseNo} onChange={handleChange} placeholder="House No." className="w-full p-3 rounded-lg outline-none text-zinc-900" />
-              <input required name="sectorColony" value={userDetails.sectorColony} onChange={handleChange} placeholder="Sector / Colony" className="w-full p-3 rounded-lg outline-none text-zinc-900" />
-              <input required name="district" value={userDetails.district} onChange={handleChange} placeholder="District" className="w-full p-3 rounded-lg outline-none text-zinc-900" />
-              <input required name="state" value={userDetails.state} onChange={handleChange} placeholder="State" className="w-full p-3 rounded-lg outline-none text-zinc-900" />
+              <label htmlFor="checkout-house" className="sr-only">House number</label>
+              <input required id="checkout-house" name="houseNo" value={userDetails.houseNo} onChange={handleChange} placeholder="House No." className="w-full p-3 rounded-lg outline-none text-zinc-900" />
+              <label htmlFor="checkout-sector" className="sr-only">Sector or colony</label>
+              <input required id="checkout-sector" name="sectorColony" value={userDetails.sectorColony} onChange={handleChange} placeholder="Sector / Colony" className="w-full p-3 rounded-lg outline-none text-zinc-900" />
+              <label htmlFor="checkout-district" className="sr-only">District</label>
+              <input required id="checkout-district" name="district" value={userDetails.district} onChange={handleChange} placeholder="District" className="w-full p-3 rounded-lg outline-none text-zinc-900" />
+              <label htmlFor="checkout-state" className="sr-only">State</label>
+              <input required id="checkout-state" name="state" value={userDetails.state} onChange={handleChange} placeholder="State" className="w-full p-3 rounded-lg outline-none text-zinc-900" />
             </div>
 
             {/* Payment Method */}
@@ -391,7 +399,7 @@ const Payment = () => {
 
             <button
               type="submit"
-              className="mt-5 w-full bg-orange-500 hover:bg-orange-600 text-white py-3 rounded-lg font-bold"
+              className="mt-5 w-full bg-orange-700 hover:bg-orange-800 text-white py-3 rounded-lg font-bold"
             >
               Pay {totalPriceInrLabel}
             </button>

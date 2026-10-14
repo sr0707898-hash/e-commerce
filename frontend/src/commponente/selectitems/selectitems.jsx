@@ -40,7 +40,7 @@ const SelectedItems = () => {
 
           <Link
             to="/payment"
-            className="inline-block bg-orange-500 text-white px-8 py-3 rounded-lg"
+            className="inline-block bg-orange-700 text-white px-8 py-3 rounded-lg"
           >
             Go to Payment
           </Link>

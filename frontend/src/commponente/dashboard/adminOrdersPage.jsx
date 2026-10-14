@@ -41,7 +41,7 @@ const AdminOrdersPage = () => {
         <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
           <div>
             <Link to="/dashboard" className="text-sm font-semibold text-orange-600 hover:text-orange-700">Back to dashboard</Link>
-            <p className="mt-5 text-xs font-bold uppercase tracking-[0.18em] text-orange-500">Order management</p>
+            <p className="mt-5 text-xs font-bold uppercase tracking-[0.18em] text-orange-700">Order management</p>
             <h1 className="mt-2 text-3xl font-bold text-slate-950">Customer orders</h1>
             <p className="mt-1 text-sm text-slate-500">Complete customer and product details for every order.</p>
           </div>
@@ -57,7 +57,7 @@ const AdminOrdersPage = () => {
             <article key={order.id} className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
               <div className="flex flex-col justify-between gap-4 border-b border-slate-200 bg-slate-50 px-5 py-5 md:flex-row md:items-start md:px-6">
                 <div>
-                  <p className="text-xs font-bold uppercase tracking-[0.16em] text-orange-500">Order</p>
+                  <p className="text-xs font-bold uppercase tracking-[0.16em] text-orange-700">Order</p>
                   <h2 className="mt-1 text-xl font-bold text-slate-950">{order.id}</h2>
                   <p className="mt-1 text-sm text-slate-500">{order.createdAt ? new Date(order.createdAt).toLocaleString("en-IN") : "Date unavailable"}</p>
                 </div>

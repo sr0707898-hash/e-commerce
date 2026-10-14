@@ -13,7 +13,7 @@ const Process = () => {
             </span>
 
             <div className="mt-8 flex items-start gap-4">
-                <span className="flex size-12 shrink-0 items-center justify-center rounded-full bg-orange-500 text-2xl text-white">
+                <span className="flex size-12 shrink-0 items-center justify-center rounded-full bg-orange-700 text-2xl text-white">
                     {item.icon}
                 </span>
 

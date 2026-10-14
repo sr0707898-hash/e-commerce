@@ -9,14 +9,16 @@ import { getProjectSettings } from "../dashboard/projectSettings";
 const Search=({mobile,searchText,setSearchText,filteredProducts,productClick})=>(
  <div className={`relative ${mobile?"flex-1 min-w-0":"w-55 xl:w-80"}`}>
   <div className="flex items-center border-2 border-orange-500 rounded-full p-1 w-full bg-white">
+   <label htmlFor={mobile ? "mobile-product-search" : "desktop-product-search"} className="sr-only">Search products</label>
    <input
+    id={mobile ? "mobile-product-search" : "desktop-product-search"}
     type="text"
     value={searchText}
     onChange={e=>setSearchText(e.target.value)}
     className="flex-1 min-w-0 w-full px-2 py-2 outline-none bg-transparent"
     placeholder="Search..."
    />
-  <button type="button" aria-label="Search products" className="shrink-0 bg-orange-500 text-white w-9 h-9 rounded-full flex items-center justify-center">
+  <button type="button" aria-label="Submit product search" className="shrink-0 bg-orange-700 text-white w-9 h-9 rounded-full flex items-center justify-center">
    <FiSearch aria-hidden="true" />
    </button>
   </div>
@@ -29,7 +31,7 @@ const Search=({mobile,searchText,setSearchText,filteredProducts,productClick})=>
       <div>
        <p className="font-bold">{p.name}</p>
        <p className="text-sm text-gray-500">{p.hindiName}</p>
-       <p className="text-orange-500">${Number(p.price).toFixed(2)}</p>
+      <p className="text-orange-700">${Number(p.price).toFixed(2)}</p>
       </div>
      </div>
     ))}
@@ -39,7 +41,7 @@ const Search=({mobile,searchText,setSearchText,filteredProducts,productClick})=>
 );
 
 const Cart = ({ cartItems }) => (
- <Link to="/payment" className="relative shrink-0">
+ <Link to="/payment" aria-label="Shopping cart" className="relative shrink-0">
   <FiShoppingBag aria-hidden="true" className="text-xl" />
   {cartItems?.length>0&&(
    <span className="absolute -top-3 -right-3 bg-red-500 text-white text-xs font-bold w-5 h-5 rounded-full flex items-center justify-center">
@@ -150,11 +152,11 @@ const Navbar=()=>{
     </Link>
 
     <ul className="hidden lg:flex items-center gap-6 xl:gap-10 mx-auto">
-     <li><Link to="/" className="font-semibold hover:text-orange-500">Home</Link></li>
-     <li><a href="#about" className="font-semibold hover:text-orange-500">About Us</a></li>
-     <li><a href="#process" className="font-semibold hover:text-orange-500">Process</a></li>
-     <li><a href="#contact" className="font-semibold hover:text-orange-500">Contact Us</a></li>
-    <li><Link to="/progress" className="font-semibold hover:text-orange-500">Our progress</Link></li>
+    <li><Link to="/" className="font-semibold hover:text-orange-700">Home</Link></li>
+    <li><a href="#about" className="font-semibold hover:text-orange-700">About Us</a></li>
+    <li><a href="#process" className="font-semibold hover:text-orange-700">Process</a></li>
+    <li><a href="#contact" className="font-semibold hover:text-orange-700">Contact Us</a></li>
+      <li><Link to="/progress" className="font-semibold hover:text-orange-700">Our progress</Link></li>
     {(isAdmin||!currentUser)&&<li><Link to="/dashboard" aria-label="Admin dashboard" title="Admin dashboard" className="flex h-10 w-10 items-center justify-center rounded-lg text-xl hover:bg-orange-50 hover:text-orange-600"><FiGrid /></Link></li>}
     </ul>
 
@@ -173,7 +175,7 @@ const Navbar=()=>{
 
     <Cart cartItems={cartItems}/>
 
-    {currentUser ? <button type="button" onClick={handleLogout} className="h-10 px-4 flex items-center gap-1 border-2 bg-red-100 text-red-700 hover:bg-red-500 hover:text-white rounded-full"><IoMdContact className="text-2xl"/>Logout</button> : <Link to="/login"><button className="h-10 px-4 flex items-center gap-1 border-2 bg-blue-100 hover:bg-blue-500 hover:text-white rounded-full"><IoMdContact className="text-2xl"/>Login</button></Link>}
+    {currentUser ? <button type="button" onClick={handleLogout} className="h-10 px-4 flex items-center gap-1 border-2 bg-red-100 text-red-700 hover:bg-red-700 hover:text-white rounded-full"><IoMdContact className="text-2xl"/>Logout</button> : <Link to="/login"><button className="h-10 px-4 flex items-center gap-1 border-2 bg-blue-100 hover:bg-blue-700 hover:text-white rounded-full"><IoMdContact className="text-2xl"/>Login</button></Link>}
     </div>
 
     <div className="ml-auto flex shrink-0 items-center gap-3 lg:hidden">
@@ -213,7 +215,7 @@ const Navbar=()=>{
 
 
 
-      {currentUser ? <button type="button" onClick={()=>{ handleLogout(); setShowMenu(false); }} className="w-full h-10 flex items-center justify-center gap-1 border-2 bg-red-100 text-red-700 hover:bg-red-500 hover:text-white rounded-full"><IoMdContact className="text-2xl"/>Logout</button> : <Link to="/login" onClick={()=>setShowMenu(false)}><button className="w-full h-10 flex items-center justify-center gap-1 border-2 bg-blue-100 hover:bg-blue-500 hover:text-white rounded-full"><IoMdContact className="text-2xl"/>Login</button></Link>}
+      {currentUser ? <button type="button" onClick={()=>{ handleLogout(); setShowMenu(false); }} className="w-full h-10 flex items-center justify-center gap-1 border-2 bg-red-100 text-red-700 hover:bg-red-700 hover:text-white rounded-full"><IoMdContact className="text-2xl"/>Logout</button> : <Link to="/login" onClick={()=>setShowMenu(false)}><button className="w-full h-10 flex items-center justify-center gap-1 border-2 bg-blue-100 hover:bg-blue-700 hover:text-white rounded-full"><IoMdContact className="text-2xl"/>Login</button></Link>}
      </div>
     </div>
    )}
@@ -222,10 +224,10 @@ const Navbar=()=>{
      <div className="fixed inset-0 z-100 flex items-center justify-center bg-slate-950/40 px-4">
       <div className="relative w-full max-w-md rounded-2xl bg-white p-6 text-center shadow-2xl">
       <button type="button" onClick={closeLoginNotice} aria-label="Close login message" className="absolute right-4 top-3 text-xl text-slate-400 hover:text-slate-700">&times;</button>
-      <p className="text-sm font-semibold uppercase tracking-[0.16em] text-orange-500">Login required</p>
+      <p className="text-sm font-semibold uppercase tracking-[0.16em] text-orange-700">Login required</p>
       <h2 className="mt-2 text-2xl font-bold text-slate-900">Please login before ordering</h2>
       <p className="mt-2 text-sm text-slate-500">You can browse the store, but an account is required to place an order.</p>
-      <Link to="/login" onClick={closeLoginNotice} className="mt-5 inline-block rounded-xl bg-orange-500 px-5 py-3 font-semibold text-white hover:bg-orange-600">Login now</Link>
+      <Link to="/login" onClick={closeLoginNotice} className="mt-5 inline-block rounded-xl bg-orange-700 px-5 py-3 font-semibold text-white hover:bg-orange-800">Login now</Link>
       </div>
      </div>
     )}

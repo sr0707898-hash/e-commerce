@@ -2,6 +2,8 @@
 
 :root {
 	color-scheme: light;
+	--color-orange-500: #c2410c;
+	--color-orange-600: #9a3412;
 }
 
 html,

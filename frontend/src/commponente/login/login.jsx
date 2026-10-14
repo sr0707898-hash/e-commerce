@@ -88,7 +88,7 @@ const Login = () => {
 
           {/* Email */}
 
-          <label className="block text-sm text-zinc-100">
+          <label htmlFor="email" className="block text-sm text-zinc-100">
             Email
           </label>
 
@@ -106,7 +106,7 @@ const Login = () => {
 
           {/* Password */}
 
-          <label className="block text-sm text-zinc-100">
+          <label htmlFor="password" className="block text-sm text-zinc-100">
             Password
           </label>
 
@@ -130,7 +130,7 @@ const Login = () => {
 
           <button
             type="submit"
-            className="h-10 w-full text-sm text-zinc-100 my-1 bg-blue-500 cursor-pointer hover:scale-105 rounded-xl outline-none"
+            className="h-10 w-full text-sm text-zinc-100 my-1 bg-blue-700 cursor-pointer hover:scale-105 hover:bg-blue-800 rounded-xl outline-none"
           >
             Sign In
           </button>

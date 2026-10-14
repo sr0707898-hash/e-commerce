@@ -1,5 +1,5 @@
 import Banner from '../banner/banner'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import useProducts from '../productList/useProducts'
 import Cards from '../card/cards'
 
@@ -23,6 +23,22 @@ const CategoryPage = ({ title, bgImage, categories = [], searchProduct = '' }) =
   const currentPage = pagination.key === pageKey ? pagination.page : 1
   const displayedPage = Math.min(currentPage, totalPages || 1)
   const pageItems = filteredItems.slice((displayedPage - 1) * PAGE_SIZE, displayedPage * PAGE_SIZE)
+
+  useEffect(() => {
+    const description = document.querySelector('meta[name="description"]')
+    const defaultDescription = 'Shop fresh fruits, vegetables, dairy, seafood, and daily groceries online with quality products from Grocify.'
+    const pageDescription = searchProduct
+      ? `Shop ${searchProduct} and discover fresh groceries at Grocify.`
+      : `Shop ${title.toLowerCase()} online at Grocify. Browse quality products and fresh groceries.`
+
+    document.title = `${searchProduct || title} | Grocify`
+    if (description) description.content = pageDescription
+
+    return () => {
+      document.title = 'Grocify | Fresh Groceries, Fruits & Vegetables'
+      if (description) description.content = defaultDescription
+    }
+  }, [searchProduct, title])
 
   return (
     <div>
@@ -51,7 +67,7 @@ const CategoryPage = ({ title, bgImage, categories = [], searchProduct = '' }) =
               onClick={() => setPagination({ key: pageKey, page })}
               aria-current={displayedPage === page ? 'page' : undefined}
               aria-label={`Go to page ${page}`}
-              className={`size-10 rounded border px-3 py-2 ${displayedPage === page ? 'border-orange-500 bg-orange-500 text-white' : 'border-zinc-300 hover:border-orange-500'}`}
+              className={`size-10 rounded border px-3 py-2 ${displayedPage === page ? 'border-orange-700 bg-orange-700 text-white' : 'border-zinc-300 hover:border-orange-700'}`}
             >
               {page}
             </button>

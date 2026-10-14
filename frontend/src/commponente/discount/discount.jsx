@@ -5,7 +5,7 @@ const Discount = () => {
   return (
     <section className='bg-zinc-100 bg-right bg-no-repeat bg-contain' style={{backgroundImage: `url(${FreshFruits})`}}>
         <div className='md:bg-transparent bg-zinc-100 flex md:flex-row flex-col max-w-[1400] mx-auto px-10 py-10'>
-            <span className='md:text-9xl text-6xl text-orange-500 font-bold tranform md:-rotate-90 h-fit md:self-center'>
+            <span className='md:text-9xl text-6xl text-orange-700 font-bold tranform md:-rotate-90 h-fit md:self-center'>
                  20%
             </span>
                 

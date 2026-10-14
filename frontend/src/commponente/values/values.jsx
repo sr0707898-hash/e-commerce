@@ -11,7 +11,7 @@ const Values = () => {
         <div key={item.id} className='flex md:flex-row-reverse items-center gap-7'>
 
             <div>
-                <span className=' flex bg-orange-500 justify-center items-center text-3xl text-white w-15 h-15 rounded-full'>{item.icon}</span>
+                <span className=' flex bg-orange-700 justify-center items-center text-3xl text-white w-15 h-15 rounded-full'>{item.icon}</span>
             </div>
 
             <div className='md:text-right'>
@@ -31,7 +31,7 @@ const Values = () => {
         <div key={item.id} className='flex  items-center gap-7 '>
 
             <div>
-                <span className=' flex bg-orange-500 justify-center items-center text-3xl text-white w-15 h-15 rounded-full'>{item.icon}</span>
+                <span className=' flex bg-orange-700 justify-center items-center text-3xl text-white w-15 h-15 rounded-full'>{item.icon}</span>
             </div>
 
             <div className=''>

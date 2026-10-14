@@ -61,7 +61,7 @@ const Product = () => {
                 key={category}
                 className={`px-5 py-2 text-lg rounded-lg ${
                   activeTab === category
-                    ? "bg-orange-500 text-white"
+                    ? "bg-orange-700 text-white"
                     : "bg-zinc-100"
                 }`}
                 onClick={() => setActivTab(category)}
@@ -95,7 +95,7 @@ const Product = () => {
                 onClick={() => setPagination({ category: activeTab, page })}
                 aria-current={displayedPage === page ? "page" : undefined}
                 aria-label={`Go to page ${page}`}
-                className={`size-10 rounded border px-3 py-2 ${displayedPage === page ? "border-orange-500 bg-orange-500 text-white" : "border-zinc-300 hover:border-orange-500"}`}
+                className={`size-10 rounded border px-3 py-2 ${displayedPage === page ? "border-orange-700 bg-orange-700 text-white" : "border-zinc-300 hover:border-orange-700"}`}
               >
                 {page}
               </button>

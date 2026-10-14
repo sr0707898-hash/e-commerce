@@ -20,10 +20,10 @@ const Testimonials = () => {
         <Heading highlight='Customers' heading='Saying' />
 
         <div className='flex justify-end py-5 gap-x-3'>
-            <button className=' custom-prev text-2xl text-zinc-800 rounded-lg w-11 h-11 flex justify-center items-center bg-zinc-100 hover:bg-orange-500 hover:text-white cursor-pointer' >
+            <button aria-label="Previous customer reviews" className=' custom-prev text-2xl text-zinc-800 rounded-lg w-11 h-11 flex justify-center items-center bg-zinc-100 hover:bg-orange-700 hover:text-white cursor-pointer' >
                 <IoIosArrowBack />
             </button>
-            <button className='custom-next text-2xl text-zinc-800 rounded-lg w-11 h-11 flex justify-center items-center bg-zinc-100 hover:bg-orange-500 hover:text-white cursor-pointer'>
+            <button aria-label="Next customer reviews" className='custom-next text-2xl text-zinc-800 rounded-lg w-11 h-11 flex justify-center items-center bg-zinc-100 hover:bg-orange-700 hover:text-white cursor-pointer'>
                 <IoIosArrowForward />
             </button>
         </div>

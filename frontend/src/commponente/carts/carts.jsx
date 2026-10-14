@@ -26,7 +26,7 @@ const Cart = () => {
 
         <Link
           to="/allproducts"
-          className="bg-orange-500 text-white px-6 py-3 rounded-lg"
+          className="bg-orange-700 text-white px-6 py-3 rounded-lg"
         >
           Continue Shopping
         </Link>
@@ -142,7 +142,7 @@ const Cart = () => {
 
           <Link
             to="/payment"
-            className="block text-center bg-orange-500 text-white py-3 rounded-lg mt-6 hover:bg-orange-600"
+            className="block text-center bg-orange-700 text-white py-3 rounded-lg mt-6 hover:bg-orange-800"
           >
             Proceed to Payment
           </Link>

@@ -33,7 +33,7 @@ const OrdersPage = () => {
       <div className="mx-auto max-w-6xl">
         <div className="flex items-center justify-between gap-4">
           <div>
-            <p className="text-sm font-semibold uppercase tracking-[0.2em] text-orange-500">My orders</p>
+            <p className="text-sm font-semibold uppercase tracking-[0.2em] text-orange-700">My orders</p>
             <h1 className="mt-2 text-3xl font-bold text-slate-900">Your orders</h1>
           </div>
           <Link to="/" className="rounded-xl bg-[#10251f] px-4 py-2 font-semibold text-white hover:bg-[#1d4437]">

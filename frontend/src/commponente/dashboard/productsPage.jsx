@@ -244,7 +244,7 @@ const ProductsPage = () => {
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <Link to="/dashboard" className="text-sm font-semibold text-orange-600 hover:text-orange-700">Back to dashboard</Link>
-            <p className="mt-5 text-sm font-semibold uppercase tracking-[0.2em] text-orange-500">Catalog</p>
+            <p className="mt-5 text-sm font-semibold uppercase tracking-[0.2em] text-orange-700">Catalog</p>
             <h1 className="mt-2 text-3xl font-bold text-slate-900">All products</h1>
           </div>
           <button onClick={openAddForm} className="rounded-xl bg-[#10251f] px-4 py-2 font-semibold text-white hover:bg-[#1d4437]">
@@ -301,20 +301,25 @@ const ProductsPage = () => {
             </div>
 
             <div className="mt-5 grid gap-4 sm:grid-cols-2">
-              <input required placeholder="Product name" value={productForm.name} onChange={(event) => setProductForm({ ...productForm, name: event.target.value })} className="rounded-xl border border-slate-200 px-3 py-2.5 sm:col-span-2" />
-              <select value={productForm.category} onChange={(event) => setProductForm({ ...productForm, category: event.target.value })} className="rounded-xl border border-slate-200 px-3 py-2.5">
+              <label htmlFor="product-name" className="sr-only">Product name</label>
+              <input id="product-name" required placeholder="Product name" value={productForm.name} onChange={(event) => setProductForm({ ...productForm, name: event.target.value })} className="rounded-xl border border-slate-200 px-3 py-2.5 sm:col-span-2" />
+              <label htmlFor="product-category" className="sr-only">Product category</label>
+              <select id="product-category" value={productForm.category} onChange={(event) => setProductForm({ ...productForm, category: event.target.value })} className="rounded-xl border border-slate-200 px-3 py-2.5">
                 <option>Fruits</option>
                 <option>Vegetables</option>
                 <option>Dairy</option>
                 <option>Seafood</option>
               </select>
-              <input required min="0" step="0.01" type="number" placeholder="Price" value={productForm.price} onChange={(event) => setProductForm({ ...productForm, price: event.target.value })} className="rounded-xl border border-slate-200 px-3 py-2.5" />
-              <input required min="0" type="number" placeholder="Stock" value={productForm.stock} onChange={(event) => setProductForm({ ...productForm, stock: event.target.value })} className="rounded-xl border border-slate-200 px-3 py-2.5" />
+              <label htmlFor="product-price" className="sr-only">Product price</label>
+              <input id="product-price" required min="0" step="0.01" type="number" placeholder="Price" value={productForm.price} onChange={(event) => setProductForm({ ...productForm, price: event.target.value })} className="rounded-xl border border-slate-200 px-3 py-2.5" />
+              <label htmlFor="product-stock" className="sr-only">Product stock</label>
+              <input id="product-stock" required min="0" type="number" placeholder="Stock" value={productForm.stock} onChange={(event) => setProductForm({ ...productForm, stock: event.target.value })} className="rounded-xl border border-slate-200 px-3 py-2.5" />
               <label className="rounded-xl border border-dashed border-orange-300 bg-orange-50 px-3 py-2.5 text-sm font-semibold text-orange-700 sm:col-span-2">
                 Choose image from computer
                 <input type="file" accept="image/*" onChange={handleImageFile} className="mt-2 block w-full text-sm font-normal text-slate-600" />
               </label>
-              <input type="url" placeholder="Or paste direct image URL" value={productForm.image.startsWith("data:") ? "" : productForm.image} onChange={(event) => setProductForm({ ...productForm, image: event.target.value })} className="rounded-xl border border-slate-200 px-3 py-2.5 sm:col-span-2" />
+              <label htmlFor="product-image-url" className="sr-only">Product image URL</label>
+              <input id="product-image-url" type="url" placeholder="Or paste direct image URL" value={productForm.image.startsWith("data:") ? "" : productForm.image} onChange={(event) => setProductForm({ ...productForm, image: event.target.value })} className="rounded-xl border border-slate-200 px-3 py-2.5 sm:col-span-2" />
               {productForm.image && <img src={productForm.image} alt="Preview" className="h-24 w-full rounded-xl object-cover sm:col-span-2" />}
             </div>
 

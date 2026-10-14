@@ -79,12 +79,13 @@ const Register = () => {
           </h1>
 
           {/* Full Name */}
-          <label className="block text-sm text-zinc-100">
+          <label htmlFor="register-name" className="block text-sm text-zinc-100">
             Full Name
           </label>
 
           <input
             type="text"
+            id="register-name"
             name="name"
             value={formData.name}
             onChange={handleChange}
@@ -94,12 +95,13 @@ const Register = () => {
           />
 
           {/* Username */}
-          <label className="block text-sm text-zinc-100">
+          <label htmlFor="register-username" className="block text-sm text-zinc-100">
             Username
           </label>
 
           <input
             type="text"
+            id="register-username"
             name="username"
             value={formData.username}
             onChange={handleChange}
@@ -109,12 +111,13 @@ const Register = () => {
           />
 
           {/* Email */}
-          <label className="block text-sm text-zinc-100">
+          <label htmlFor="register-email" className="block text-sm text-zinc-100">
             Email
           </label>
 
           <input
             type="email"
+            id="register-email"
             name="email"
             value={formData.email}
             onChange={handleChange}
@@ -124,12 +127,13 @@ const Register = () => {
           />
 
           {/* Password */}
-          <label className="block text-sm text-zinc-100">
+          <label htmlFor="register-password" className="block text-sm text-zinc-100">
             Password
           </label>
 
           <input
             type="password"
+            id="register-password"
             name="password"
             value={formData.password}
             onChange={handleChange}
@@ -139,12 +143,13 @@ const Register = () => {
           />
 
           {/* Mobile */}
-          <label className="block text-sm text-zinc-100">
+          <label htmlFor="register-phone" className="block text-sm text-zinc-100">
             Mobile No
           </label>
 
           <input
             type="tel"
+            id="register-phone"
             name="phone"
             value={formData.phone}
             onChange={handleChange}
@@ -156,7 +161,7 @@ const Register = () => {
           {/* Submit */}
           <button
             type="submit"
-            className="h-10 w-full text-sm text-zinc-100 my-1 bg-blue-500 cursor-pointer hover:scale-105 rounded-xl outline-none"
+            className="h-10 w-full text-sm text-zinc-100 my-1 bg-blue-700 cursor-pointer hover:scale-105 hover:bg-blue-800 rounded-xl outline-none"
           >
             Submit
           </button>
