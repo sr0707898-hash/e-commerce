@@ -4,6 +4,8 @@ import useProducts from "../productList/useProducts";
 import Cards from "../card/cards";
 import { Link } from "react-router-dom";
 
+const PAGE_SIZE = 8;
+
 const Product = () => {
 
   const categories = [
@@ -15,17 +17,22 @@ const Product = () => {
   ];
 
   const [activeTab, setActivTab] = useState("All");
+  const [pagination, setPagination] = useState({ category: "", page: 1 });
   const products = useProducts();
 
-  const fiterItems =
+  const filteredItems =
     activeTab === "All"
       ? products
       : products.filter(
           (item) => item.category === activeTab
         );
 
-  const renderCards = fiterItems.slice(0, 8).map((product) => {
-    return (
+  const totalPages = Math.ceil(filteredItems.length / PAGE_SIZE);
+  const currentPage = pagination.category === activeTab ? pagination.page : 1;
+  const displayedPage = Math.min(currentPage, totalPages || 1);
+  const pageItems = filteredItems.slice((displayedPage - 1) * PAGE_SIZE, displayedPage * PAGE_SIZE);
+
+  const renderCards = pageItems.map((product) => (
       <Cards
         key={product.id}
         id={product.id}
@@ -33,8 +40,7 @@ const Product = () => {
         name={product.name}
         price={product.price}
       />
-    );
-  });
+  ));
 
   return (
     <section>
@@ -71,6 +77,39 @@ const Product = () => {
         <div className="grid grid-cols-1 md:grid-cols-4 mt-20 gap-9">
           {renderCards}
         </div>
+
+        {totalPages > 1 && (
+          <nav className="mt-10 flex flex-wrap items-center justify-center gap-2" aria-label="Home product pagination">
+            <button
+              type="button"
+              onClick={() => setPagination({ category: activeTab, page: Math.max(1, displayedPage - 1) })}
+              disabled={displayedPage === 1}
+              className="rounded border border-zinc-300 px-3 py-2 disabled:cursor-not-allowed disabled:opacity-50"
+            >
+              Previous
+            </button>
+            {Array.from({ length: totalPages }, (_, index) => index + 1).map((page) => (
+              <button
+                key={page}
+                type="button"
+                onClick={() => setPagination({ category: activeTab, page })}
+                aria-current={displayedPage === page ? "page" : undefined}
+                aria-label={`Go to page ${page}`}
+                className={`size-10 rounded border px-3 py-2 ${displayedPage === page ? "border-orange-500 bg-orange-500 text-white" : "border-zinc-300 hover:border-orange-500"}`}
+              >
+                {page}
+              </button>
+            ))}
+            <button
+              type="button"
+              onClick={() => setPagination({ category: activeTab, page: Math.min(totalPages, displayedPage + 1) })}
+              disabled={displayedPage === totalPages}
+              className="rounded border border-zinc-300 px-3 py-2 disabled:cursor-not-allowed disabled:opacity-50"
+            >
+              Next
+            </button>
+          </nav>
+        )}
 
         {/* View All */}
         <div className="mt-15 mx-auto w-fit">
