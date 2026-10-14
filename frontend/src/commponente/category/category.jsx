@@ -1,10 +1,10 @@
 
 import Heading from '../heading/heading'
 
-import FruitsCat from '../../assets/all imges/fruits-and-veggies.png'
+import FruitsCat from '../../assets/all imges/fruits-and-veggies.webp'
 
-import SeaFoodcat from '../../assets/all imges/meat-and-seafood.png'
-import DairyCat from '../../assets/all imges/dairy-and-eggs.png'
+import SeaFoodcat from '../../assets/all imges/meat-and-seafood.webp'
+import DairyCat from '../../assets/all imges/dairy-and-eggs.webp'
 
 import { Link } from 'react-router-dom'
 
@@ -15,6 +15,8 @@ const category = [
         description:
             'Fresh, organic produce sourced daily from local farms. Explore a wide range of seasonal fruits and crisp vegetables.',
         image: FruitsCat,
+        imageWidth: 1920,
+        imageHeight: 795,
         path: '/fruits'
     },
     {
@@ -23,6 +25,8 @@ const category = [
         description:
             'Wholesome dairy products and free-range eggs. From creamy milk and yogurt to artisanal cheeses.',
         image: DairyCat,
+        imageWidth: 1920,
+        imageHeight: 1005,
         path: '/dairy'
     },
     {
@@ -31,6 +35,8 @@ const category = [
         description:
             'High-quality, responsibly sourced meat and seafood. Choose from fresh cuts, marinated options, and more.',
         image: SeaFoodcat,
+        imageWidth: 1248,
+        imageHeight: 547,
         path: '/seefood'
     }
 ]
@@ -45,6 +51,10 @@ const Category = () => {
                 <div className='w-full h-[250px] sm:h-[280px] md:h-[300px] relative -mb-10'>
                     <img
                         src={card.image}
+                        width={card.imageWidth}
+                        height={card.imageHeight}
+                        loading='lazy'
+                        decoding='async'
                         className='absolute bottom-0 left-1/2 -translate-x-1/2 max-w-[90%] h-auto'
                         alt={card.title}
                     />

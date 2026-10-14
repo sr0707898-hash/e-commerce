@@ -56,6 +56,8 @@ const Cards = ({ id, image, name, price }) => {
         <img
           src={image}
           alt={name}
+          width="320"
+          height="200"
           loading="lazy"
           decoding="async"
           className="h-full w-full object-contain mx-auto"

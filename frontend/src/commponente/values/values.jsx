@@ -1,5 +1,5 @@
 import Heading from '../heading/heading'
-import Basket from '../../assets/all imges/basket-full-vegetables.png'
+import Basket from '../../assets/all imges/basket-full-vegetables.webp'
 import { FaHeart, FaLeaf, FaSeedling, FaShieldAlt } from "react-icons/fa";
 
     
@@ -55,7 +55,7 @@ const Values = () => {
                     {leftValues}
                 </div>
                 <div className='md:flex w-1/3 hidden '>
-                    <img src={Basket} alt="" />
+                    <img src={Basket} alt="Basket of fresh vegetables" width="1312" height="1407" loading="lazy" decoding="async" />
                 </div>
 
                 <div className='md:min-h-100 gap-15 flex flex-col justify-between ' >

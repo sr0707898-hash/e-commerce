@@ -2,11 +2,11 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import Heading from '../heading/heading'
 import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io'
 import { Navigation } from 'swiper/modules';
-import Custmer1 from '../../assets/all imges/customer1.jpg'
-import Custmer2 from '../../assets/all imges/customer2.jpg'
-import Custmer3 from '../../assets/all imges/customer3.jpg'
-import Custmer4 from '../../assets/all imges/customer4.jpg'
-import Custmer5 from '../../assets/all imges/customer5.jpg'
+import Custmer1 from '../../assets/all imges/customer1.webp'
+import Custmer2 from '../../assets/all imges/customer2.webp'
+import Custmer3 from '../../assets/all imges/customer3.webp'
+import Custmer4 from '../../assets/all imges/customer4.webp'
+import Custmer5 from '../../assets/all imges/customer5.webp'
 import 'swiper/css';
 import 'swiper/css/navigation';
 import { FaStar } from "react-icons/fa6";
@@ -45,7 +45,7 @@ const Testimonials = () => {
                         <SwiperSlide key={item.id} className='bg-zinc-100 rounded-xl p-8'>
                           <div className='flex gap-6 items-center'>
                             <div className='w-16 h-16 rounded-full  outline-2 outline-orange-500 outline-offset-4 overflow-hidden'>
-                                <img src={item.image} className='h-full w-full' />
+                                <img src={item.image} alt={item.name} width="64" height="64" loading="lazy" decoding="async" className='h-full w-full object-cover' />
  
                             </div>
                             <div>

@@ -1,5 +1,5 @@
 import Button from '../buttion/button'
-import FreshFruits from '../../assets/all imges/fresh-fruits.png'
+import FreshFruits from '../../assets/all imges/fresh-fruits.webp'
 
 const Discount = () => {
   return (

@@ -1,4 +1,4 @@
-import BgAll from '../../assets/all imges/all-banner.jpg'
+import BgAll from '../../assets/all imges/all-banner.webp'
 import { useLocation } from "react-router-dom";
 import CategoryPage from '../categoryPage/categoryPage'
 const Allproducts = () => {

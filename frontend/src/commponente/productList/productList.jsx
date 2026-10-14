@@ -1,90 +1,90 @@
 
 // ================= SEAFOOD =================
 
-import Beef from "../../assets/all imges/beef.png";
-import Salmon from "../../assets/all imges/salmon.png";
-import Shrimp from "../../assets/all imges/shrimp.png";
-import fish from "../../assets/all imges/tilapia.png";
-import Eggs from "../../assets/all imges/eggs.png";
-import Chickan from "../../assets/all imges/chicken-breast.png";
+import Beef from "../../assets/all imges/beef.webp";
+import Salmon from "../../assets/all imges/salmon.webp";
+import Shrimp from "../../assets/all imges/shrimp.webp";
+import fish from "../../assets/all imges/tilapia.webp";
+import Eggs from "../../assets/all imges/eggs.webp";
+import Chickan from "../../assets/all imges/chicken-breast.webp";
 
 
 // ================= DAIRY =================
 
-import Cheese from "../../assets/all imges/cheese.png";
-import Condensed from "../../assets/all imges/condensed-milk.png";
-import Milk from "../../assets/all imges/milk.png";
-import Ricotta from "../../assets/all imges/ricotta-cheese.png";
-import Tofu from "../../assets/all imges/tofu.png";
-import Yogurt from "../../assets/all imges/yogurt.png";
-import Slice from "../../assets/all imges/slice-cheese.png";
+import Cheese from "../../assets/all imges/cheese.webp";
+import Condensed from "../../assets/all imges/condensed-milk.webp";
+import Milk from "../../assets/all imges/milk.webp";
+import Ricotta from "../../assets/all imges/ricotta-cheese.webp";
+import Tofu from "../../assets/all imges/tofu.webp";
+import Yogurt from "../../assets/all imges/yogurt.webp";
+import Slice from "../../assets/all imges/slice-cheese.webp";
 
 
 // ================= FRUITS =================
 
-import Apple from "../../assets/fruits name/apples.jpg";
-import Mango from "../../assets/fruits name/mango.jpg";
-import Banana from "../../assets/fruits name/bananas.jpg";
-import Orange from "../../assets/fruits name/oranges.jpg";
-import Papaya from "../../assets/fruits name/papaya.jpg";
-import Pomegranate from "../../assets/fruits name/pomegranate.jpg";
-import Grapes from "../../assets/fruits name/grapes.jpg";
-import Guava from "../../assets/fruits name/guava.jpg";
-import Watermelon from "../../assets/fruits name/watermelon.jpg";
-import Pineapple from "../../assets/fruits name/pineapple.jpg";
-import Coconut from "../../assets/fruits name/coconut.jpg";
-import SweetLime from "../../assets/fruits name/sweet-lime.jpg";
-import Pear from "../../assets/fruits name/pear.jpg";
-import Sapodilla from "../../assets/fruits name/sapodilla.jpg";
-import Jackfruit from "../../assets/fruits name/jackfruit.jpg";
-import Strawberry from "../../assets/fruits name/strowberry.jpg";
-import Blackberry from "../../assets/fruits name/blackberry.jpg";
-import CustardApple from "../../assets/fruits name/custard-apple.jpg";
-import Peach from "../../assets/fruits name/peach.jpg";
-import Plum from "../../assets/fruits name/plum.jpg";
-import Kiwi from "../../assets/fruits name/kiwi.jpg";
-import Lychee from "../../assets/fruits name/lychee.jpg";
-import Fig from "../../assets/fruits name/fig.jpg";
-import Muskmelon from "../../assets/fruits name/muskmelon.jpg";
-import Lemon from "../../assets/fruits name/lemon.jpg";
-import DragonFruit from "../../assets/fruits name/dragon-fruit.jpg";
-import Cherry from "../../assets/fruits name/cherry.jpg";
-import Blueberry from "../../assets/fruits name/blueberry.jpg";
-import Tamarind from "../../assets/fruits name/tamarind.jpg";
+import Apple from "../../assets/fruits name/apples.webp";
+import Mango from "../../assets/fruits name/mango.webp";
+import Banana from "../../assets/fruits name/bananas.webp";
+import Orange from "../../assets/fruits name/oranges.webp";
+import Papaya from "../../assets/fruits name/papaya.webp";
+import Pomegranate from "../../assets/fruits name/pomegranate.webp";
+import Grapes from "../../assets/fruits name/grapes.webp";
+import Guava from "../../assets/fruits name/guava.webp";
+import Watermelon from "../../assets/fruits name/watermelon.webp";
+import Pineapple from "../../assets/fruits name/pineapple.webp";
+import Coconut from "../../assets/fruits name/coconut.webp";
+import SweetLime from "../../assets/fruits name/sweet-lime.webp";
+import Pear from "../../assets/fruits name/pear.webp";
+import Sapodilla from "../../assets/fruits name/sapodilla.webp";
+import Jackfruit from "../../assets/fruits name/jackfruit.webp";
+import Strawberry from "../../assets/fruits name/strowberry.webp";
+import Blackberry from "../../assets/fruits name/blackberry.webp";
+import CustardApple from "../../assets/fruits name/custard-apple.webp";
+import Peach from "../../assets/fruits name/peach.webp";
+import Plum from "../../assets/fruits name/plum.webp";
+import Kiwi from "../../assets/fruits name/kiwi.webp";
+import Lychee from "../../assets/fruits name/lychee.webp";
+import Fig from "../../assets/fruits name/fig.webp";
+import Muskmelon from "../../assets/fruits name/muskmelon.webp";
+import Lemon from "../../assets/fruits name/lemon.webp";
+import DragonFruit from "../../assets/fruits name/dragon-fruit.webp";
+import Cherry from "../../assets/fruits name/cherry.webp";
+import Blueberry from "../../assets/fruits name/blueberry.webp";
+import Tamarind from "../../assets/fruits name/tamarind.webp";
 
 
 // ================= VEGETABLES =================
 
-import Potato from "../../assets/veagitable images/potatos.jpg";
-import Carrot from "../../assets/veagitable images/carrots.jpg";
-import Onion from "../../assets/veagitable images/onions.jpg";
-import Brocooli from "../../assets/veagitable images/brocoolis.jpg";
-import Spinach from "../../assets/veagitable images/spinach.jpg";
-import Tomato from "../../assets/veagitable images/tamtos.jpg";
-import Cabbage from "../../assets/veagitable images/cabbage.jpg";
-import Cucumber from "../../assets/veagitable images/cocumber.jpg";
-import Garlic from "../../assets/veagitable images/garlic.jpg";
-import Lettuce from "../../assets/veagitable images/lettuce.jpg";
-import Cauliflower from "../../assets/veagitable images/cauliflower.jpg";
-import Pepper from "../../assets/veagitable images/pepper.jpg";
-import Pears from "../../assets/veagitable images/pears.jpg";
-import Celery from "../../assets/veagitable images/celery.jpg";
-import Radish from "../../assets/veagitable images/radish.jpg";
-import SweetPotato from "../../assets/veagitable images/sweet-potato.jpg";
-import Zucchini from "../../assets/veagitable images/zucchni.jpg";
-import Mushroom from "../../assets/veagitable images/mushroom.jpg";
-import Asparagus from "../../assets/veagitable images/asparagus.jpg";
-import Pumpkin from "../../assets/veagitable images/pumpkin.jpg";
-import Beetroot from "../../assets/veagitable images/beetroot.jpg";
-import Kale from "../../assets/veagitable images/kale.jpg";
-import Turnip from "../../assets/veagitable images/turnip.jpg";
-import Corn from "../../assets/veagitable images/corn.jpg";
-import Eggplant from "../../assets/veagitable images/eggplant.jpg";
-import GreenBean from "../../assets/veagitable images/green-bean.jpg";
-import Squash from "../../assets/veagitable images/squash.jpg";
-import Ginger from "../../assets/veagitable images/ginger.jpg";
-import Artichoke from "../../assets/veagitable images/artichoke.jpg";
-import BodyFinger from "../../assets/veagitable images/bady-finger.jpg";
+import Potato from "../../assets/veagitable images/potatos.webp";
+import Carrot from "../../assets/veagitable images/carrots.webp";
+import Onion from "../../assets/veagitable images/onions.webp";
+import Brocooli from "../../assets/veagitable images/brocoolis.webp";
+import Spinach from "../../assets/veagitable images/spinach.webp";
+import Tomato from "../../assets/veagitable images/tamtos.webp";
+import Cabbage from "../../assets/veagitable images/cabbage.webp";
+import Cucumber from "../../assets/veagitable images/cocumber.webp";
+import Garlic from "../../assets/veagitable images/garlic.webp";
+import Lettuce from "../../assets/veagitable images/lettuce.webp";
+import Cauliflower from "../../assets/veagitable images/cauliflower.webp";
+import Pepper from "../../assets/veagitable images/pepper.webp";
+import Pears from "../../assets/veagitable images/pears.webp";
+import Celery from "../../assets/veagitable images/celery.webp";
+import Radish from "../../assets/veagitable images/radish.webp";
+import SweetPotato from "../../assets/veagitable images/sweet-potato.webp";
+import Zucchini from "../../assets/veagitable images/zucchni.webp";
+import Mushroom from "../../assets/veagitable images/mushroom.webp";
+import Asparagus from "../../assets/veagitable images/asparagus.webp";
+import Pumpkin from "../../assets/veagitable images/pumpkin.webp";
+import Beetroot from "../../assets/veagitable images/beetroot.webp";
+import Kale from "../../assets/veagitable images/kale.webp";
+import Turnip from "../../assets/veagitable images/turnip.webp";
+import Corn from "../../assets/veagitable images/corn.webp";
+import Eggplant from "../../assets/veagitable images/eggplant.webp";
+import GreenBean from "../../assets/veagitable images/green-bean.webp";
+import Squash from "../../assets/veagitable images/squash.webp";
+import Ginger from "../../assets/veagitable images/ginger.webp";
+import Artichoke from "../../assets/veagitable images/artichoke.webp";
+import BodyFinger from "../../assets/veagitable images/bady-finger.webp";
 
 
 const Products = [

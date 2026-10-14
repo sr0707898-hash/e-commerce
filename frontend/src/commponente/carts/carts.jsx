@@ -56,6 +56,10 @@ const Cart = () => {
               <img
                 src={item.image}
                 alt={item.name}
+                width="112"
+                height="112"
+                loading="lazy"
+                decoding="async"
                 className="w-24 h-24 sm:w-28 sm:h-28 object-contain self-center sm:self-auto"
               />
 

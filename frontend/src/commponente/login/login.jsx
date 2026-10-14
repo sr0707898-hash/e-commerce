@@ -1,6 +1,6 @@
 
 import { useState } from "react";
-import Background from "../../assets/all imges/background.jpg";
+import Background from "../../assets/all imges/background.webp";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 
 const API_URL = import.meta.env.VITE_API_URL || `http://${window.location.hostname}:5000`;

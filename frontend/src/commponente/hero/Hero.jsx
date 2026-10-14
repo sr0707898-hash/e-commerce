@@ -1,5 +1,5 @@
 import Button from "../buttion/button"
-import Grocery from '../../assets/all imges/grocery.png'
+import Grocery from '../../assets/all imges/grocery.webp'
 
 const Hero = () => {
   return (
@@ -16,7 +16,15 @@ const Hero = () => {
        {/* sec1 images */}
 
       <div className='flex-1 '>
-      <img src={Grocery} alt="" />
+      <img
+        src={Grocery}
+        alt="Fresh grocery assortment"
+        width="1920"
+        height="1639"
+        loading="eager"
+        fetchPriority="high"
+        decoding="async"
+      />
       </div>
 
     </div>

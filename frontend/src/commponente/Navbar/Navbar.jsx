@@ -25,7 +25,7 @@ const Search=({mobile,searchText,setSearchText,filteredProducts,productClick})=>
    <div className="absolute top-14 left-0 w-70 max-w-[90vw] bg-white shadow-xl rounded-lg overflow-hidden z-100">
     {filteredProducts.slice(0,6).map(p=>(
      <div key={p.id} onClick={()=>productClick(p)} className="flex gap-3 p-3 hover:bg-orange-100 cursor-pointer">
-      <img src={p.image} alt={p.name} className="w-12 h-12 object-contain"/>
+      <img src={p.image} alt={p.name} width="48" height="48" loading="lazy" decoding="async" className="w-12 h-12 object-contain"/>
       <div>
        <p className="font-bold">{p.name}</p>
        <p className="text-sm text-gray-500">{p.hindiName}</p>

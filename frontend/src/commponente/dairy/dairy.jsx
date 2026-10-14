@@ -1,5 +1,5 @@
 import CategoryPage from '../categoryPage/categoryPage'
-import BgDairy from '../../assets/all imges/dairy-banner.jpg'
+import BgDairy from '../../assets/all imges/dairy-banner.webp'
 
 const Dairy = () => {
   return (
