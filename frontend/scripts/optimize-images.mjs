@@ -8,9 +8,9 @@ const sourceRoot = path.join(frontendRoot, "src");
 const assetsRoot = path.join(sourceRoot, "assets");
 const productListPath = path.join(sourceRoot, "commponente", "productList", "productList.jsx");
 const productListSource = await readFile(productListPath, "utf8");
-const productAssets = new Set(
-  [...productListSource.matchAll(/from\s+["']([^"']+\.(?:png|jpe?g))["']/gi)]
-    .map((match) => path.resolve(path.dirname(productListPath), match[1]))
+const productAssetNames = new Set(
+  [...productListSource.matchAll(/from\s+["']([^"']+\.(?:png|jpe?g|webp))["']/gi)]
+    .map((match) => path.resolve(path.dirname(productListPath), match[1]).replace(/\.(?:png|jpe?g|webp)$/i, ""))
 );
 
 const walk = async (directory) => {
@@ -32,7 +32,8 @@ let optimizedBytes = 0;
 
 for (const inputPath of imageFiles) {
   const outputPath = inputPath.replace(/\.(?:png|jpe?g)$/i, ".webp");
-  const maximumDimension = productAssets.has(inputPath) ? 800 : 1920;
+  const assetName = inputPath.replace(/\.(?:png|jpe?g)$/i, "");
+  const maximumDimension = productAssetNames.has(assetName) ? 800 : 1920;
   const inputSize = (await stat(inputPath)).size;
   const { width, height, size } = await sharp(inputPath)
     .rotate()
@@ -48,6 +49,16 @@ for (const inputPath of imageFiles) {
   originalBytes += inputSize;
   optimizedBytes += size;
   console.log(`${path.relative(frontendRoot, inputPath)}: ${width}x${height}, ${(inputSize / 1024).toFixed(0)} KB -> ${(size / 1024).toFixed(0)} KB`);
+}
+
+const heroImage = path.join(assetsRoot, "all imges", "grocery.webp");
+for (const width of [480, 960]) {
+  const outputPath = path.join(assetsRoot, "all imges", `grocery-${width}.webp`);
+  const { size } = await sharp(heroImage)
+    .resize({ width, withoutEnlargement: true })
+    .webp({ quality: 76, effort: 5 })
+    .toFile(outputPath);
+  console.log(`${path.relative(frontendRoot, outputPath)}: ${(size / 1024).toFixed(0)} KB`);
 }
 
 const updateImports = async (directory) => {

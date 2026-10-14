@@ -1,5 +1,7 @@
 import Button from "../buttion/button"
 import Grocery from '../../assets/all imges/grocery.webp'
+import GrocerySmall from '../../assets/all imges/grocery-480.webp'
+import GroceryMedium from '../../assets/all imges/grocery-960.webp'
 
 const Hero = () => {
   return (
@@ -18,6 +20,8 @@ const Hero = () => {
       <div className='w-full flex-1'>
       <img
         src={Grocery}
+        srcSet={`${GrocerySmall} 480w, ${GroceryMedium} 960w, ${Grocery} 1920w`}
+        sizes="(max-width: 1023px) 100vw, 50vw"
         alt="Fresh grocery assortment"
         width="1920"
         height="1639"

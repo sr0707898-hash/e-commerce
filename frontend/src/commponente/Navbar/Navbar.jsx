@@ -1,6 +1,6 @@
 import { useState,useEffect,useContext } from "react";
 import {IoMdContact} from "react-icons/io";
-import {FiGrid} from "react-icons/fi";
+import {FiGrid, FiSearch, FiShoppingBag, FiHeart, FiMenu, FiX} from "react-icons/fi";
 import {Link,useNavigate} from "react-router-dom";
 import useProducts from "../productList/useProducts";
 import {CartContext} from "../cardcontext/cartContext";
@@ -16,8 +16,8 @@ const Search=({mobile,searchText,setSearchText,filteredProducts,productClick})=>
     className="flex-1 min-w-0 w-full px-2 py-2 outline-none bg-transparent"
     placeholder="Search..."
    />
-   <button type="button" className="shrink-0 bg-orange-500 text-white w-9 h-9 rounded-full flex items-center justify-center">
-    <i className="bi bi-search"></i>
+  <button type="button" aria-label="Search products" className="shrink-0 bg-orange-500 text-white w-9 h-9 rounded-full flex items-center justify-center">
+   <FiSearch aria-hidden="true" />
    </button>
   </div>
 
@@ -40,7 +40,7 @@ const Search=({mobile,searchText,setSearchText,filteredProducts,productClick})=>
 
 const Cart = ({ cartItems }) => (
  <Link to="/payment" className="relative shrink-0">
-  <i className="bi bi-bag-check-fill text-xl"></i>
+  <FiShoppingBag aria-hidden="true" className="text-xl" />
   {cartItems?.length>0&&(
    <span className="absolute -top-3 -right-3 bg-red-500 text-white text-xs font-bold w-5 h-5 rounded-full flex items-center justify-center">
     {cartItems.length}
@@ -167,7 +167,7 @@ const Navbar=()=>{
      />
 
     <Link to="/orders" className="relative" aria-label="My orders">
-      <i className="bi bi-heart-fill text-xl"></i>
+      <FiHeart aria-hidden="true" className="text-xl" />
      {orderCount>0&&<span className="absolute -top-3 -right-3 bg-red-500 text-white text-xs font-bold w-5 h-5 rounded-full flex items-center justify-center">{orderCount}</span>}
      </Link>
 
@@ -179,14 +179,14 @@ const Navbar=()=>{
     <div className="ml-auto flex shrink-0 items-center gap-3 lg:hidden">
 
       <Link to="/orders" className="relative" aria-label="My orders">
-      <i className="bi bi-heart-fill text-xl"></i>
+      <FiHeart aria-hidden="true" className="text-xl" />
       {orderCount>0&&<span className="absolute -top-3 -right-3 bg-red-500 text-white text-xs font-bold w-5 h-5 rounded-full flex items-center justify-center">{orderCount}</span>}
      </Link>
 
     <Cart cartItems={cartItems}/>
 
-     <button onClick={()=>setShowMenu(!showMenu)} className="text-2xl sm:text-3xl shrink-0 cursor-pointer">
-      <i className={showMenu?"bi bi-x":"bi bi-list"}></i>
+    <button type="button" aria-label={showMenu ? "Close menu" : "Open menu"} onClick={()=>setShowMenu(!showMenu)} className="text-2xl sm:text-3xl shrink-0 cursor-pointer">
+     {showMenu ? <FiX aria-hidden="true" /> : <FiMenu aria-hidden="true" />}
      </button>
     </div>
 
