@@ -48,9 +48,9 @@ const Values = () => {
 
   return (
     <section>
-        <div className='max-w-[1400px] mx-auto px-10 py-20'>
+        <div className='max-w-350 mx-auto px-10 py-20'>
             <Heading highlight="Our" heading="Value" /> 
-            <div className='flex md:flex-row flex-col gap-15 mt-10 md:gap-5 mt-15'> 
+            <div className='flex md:flex-row flex-col gap-15 mt-15 md:gap-5'> 
                 <div className='md:min-h-100 flex gap-15 flex-col justify-between'>
                     {leftValues}
                 </div>

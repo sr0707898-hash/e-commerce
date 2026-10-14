@@ -28,9 +28,9 @@ const DeferredTestimonials = () => {
   }, [shouldRender]);
 
   return (
-    <div ref={containerRef} className="min-h-[490px]">
+    <div ref={containerRef} className="min-h-122.5">
       {shouldRender && (
-        <Suspense fallback={<div className="min-h-[490px]" aria-busy="true" />}>
+        <Suspense fallback={<div className="min-h-122.5" aria-busy="true" />}>
           <Testimonials />
         </Suspense>
       )}

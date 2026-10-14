@@ -7,7 +7,7 @@ const SelectedItems = () => {
   const { cartItems } = useContext(CartContext);
 
   return (
-    <div className="max-w-[1000px] mx-auto p-10">
+    <div className="max-w-250 mx-auto p-10">
       <h1 className="text-3xl font-bold mb-8">Selected Items</h1>
 
       {cartItems.length === 0 ? (

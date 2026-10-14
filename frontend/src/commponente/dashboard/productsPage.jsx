@@ -36,44 +36,54 @@ const ProductsPage = () => {
   const [message, setMessage] = useState("");
   const [productForm, setProductForm] = useState({ name: "", category: "Fruits", price: "", stock: "", image: "" });
 
-  const loadProducts = async () => {
-    const token = localStorage.getItem("adminToken");
-    if (!token) {
-      navigate("/dashboard");
-      return;
-    }
+  useEffect(() => {
+    let active = true;
 
-    try {
-      const response = await fetch(`${API_URL}/admin/products`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      const data = await response.json().catch(() => ({}));
-      if (response.status === 401) {
-        localStorage.removeItem("adminToken");
+    const loadProducts = async () => {
+      const token = localStorage.getItem("adminToken");
+      if (!token) {
         navigate("/dashboard");
         return;
       }
-      if (!response.ok) throw new Error(data.message || "Could not load products");
 
-      const apiProducts = Array.isArray(data.products) ? data.products : [];
-      const mergedProducts = applyCatalogOverrides([
-        ...apiProducts,
-        ...fallbackProducts.filter((fallbackProduct) => !apiProducts.some((apiProduct) => apiProduct.name === fallbackProduct.name)),
-      ]);
+      try {
+        const response = await fetch(`${API_URL}/admin/products`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        const data = await response.json().catch(() => ({}));
+        if (!active) return;
 
-      setProducts(mergedProducts.length ? mergedProducts : fallbackProducts);
-      localStorage.setItem("grocify_products", JSON.stringify(mergedProducts.length ? mergedProducts : fallbackProducts));
-    } catch (loadError) {
-      setError(loadError.message || "Could not load products");
-      setProducts(applyCatalogOverrides(fallbackProducts));
-      localStorage.setItem("grocify_products", JSON.stringify(applyCatalogOverrides(fallbackProducts)));
-    } finally {
-      setIsLoading(false);
-    }
-  };
+        if (response.status === 401) {
+          localStorage.removeItem("adminToken");
+          navigate("/dashboard");
+          return;
+        }
+        if (!response.ok) throw new Error(data.message || "Could not load products");
 
-  useEffect(() => {
-    loadProducts();
+        const apiProducts = Array.isArray(data.products) ? data.products : [];
+        const mergedProducts = applyCatalogOverrides([
+          ...apiProducts,
+          ...fallbackProducts.filter((fallbackProduct) => !apiProducts.some((apiProduct) => apiProduct.name === fallbackProduct.name)),
+        ]);
+        const productsToShow = mergedProducts.length ? mergedProducts : fallbackProducts;
+
+        setProducts(productsToShow);
+        localStorage.setItem("grocify_products", JSON.stringify(productsToShow));
+      } catch (loadError) {
+        if (!active) return;
+        const fallbackItems = applyCatalogOverrides(fallbackProducts);
+        setError(loadError.message || "Could not load products");
+        setProducts(fallbackItems);
+        localStorage.setItem("grocify_products", JSON.stringify(fallbackItems));
+      } finally {
+        if (active) setIsLoading(false);
+      }
+    };
+
+    void loadProducts();
+    return () => {
+      active = false;
+    };
   }, [navigate]);
 
   const handleImageFile = (event) => {

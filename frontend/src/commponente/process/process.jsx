@@ -8,7 +8,7 @@ import { BsTruck } from "react-icons/bs";
 const Process = () => {
     const rendersteps = staps.map((item) => (
         <article key={item.id} className="min-w-0">
-            <span className="mx-auto flex size-16 items-center justify-center rounded-full bg-zinc-800 text-5xl text-white outline outline-2 outline-dashed outline-offset-4 outline-zinc-800">
+            <span className="mx-auto flex size-16 items-center justify-center rounded-full bg-zinc-800 text-5xl text-white outline-2 outline-dashed outline-offset-4 outline-zinc-800">
                 {item.number}
             </span>
 

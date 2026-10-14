@@ -135,7 +135,7 @@ const Payment = () => {
   };
 
   return (
-    <section className="w-full max-w-[1200px] mx-auto px-4 py-8 sm:px-5 sm:py-10">
+    <section className="w-full max-w-300 mx-auto px-4 py-8 sm:px-5 sm:py-10">
 
       <h1 className="text-3xl sm:text-4xl font-bold mb-8 sm:mb-10">
         Payment

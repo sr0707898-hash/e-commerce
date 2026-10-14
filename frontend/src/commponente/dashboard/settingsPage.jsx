@@ -4,18 +4,16 @@ import { getProjectSettings, updateProjectSettings } from "./projectSettings";
 
 const SettingsPage = () => {
   const navigate = useNavigate();
-  const [isAdmin, setIsAdmin] = useState(() => Boolean(localStorage.getItem("adminToken")));
+  const isAdmin = Boolean(localStorage.getItem("adminToken"));
   const [settings, setSettings] = useState(getProjectSettings);
   const [isSaving, setIsSaving] = useState(false);
   const [message, setMessage] = useState("");
 
   useEffect(() => {
-    if (!localStorage.getItem("adminToken")) {
+    if (!isAdmin) {
       navigate("/dashboard", { replace: true });
-      return;
     }
-    setIsAdmin(true);
-  }, [navigate]);
+  }, [isAdmin, navigate]);
 
   useEffect(() => {
     const syncSettings = () => setSettings(getProjectSettings());

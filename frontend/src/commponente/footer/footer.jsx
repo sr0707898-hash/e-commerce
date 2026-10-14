@@ -6,13 +6,13 @@ const Footer = () => {
 
   return (
     <footer className='bg-zinc-100 py-20 mt-20'>
-        <div className=' flex flex-wrap max-w-[1400px] mx-auto px-10 gap-y-12'>
-             <div className=' flex-1 basis-[300px]'>
+           <div className=' flex flex-wrap max-w-350 mx-auto px-10 gap-y-12'>
+             <div className=' flex-1 basis-75'>
                 <a href="#"className='text-4xl font-bold   '>
                                 {projectSettings.storeName}
                       </a>
 
-                    <p className='text-zinc-600 mt-6 max-w-[350px]'>
+                    <p className='text-zinc-600 mt-6 max-w-87.5'>
                                                 {projectSettings.about}
                     </p>
 

@@ -46,9 +46,9 @@ const Category = () => {
     const rendercards = category.map(card => {
         return (
             <div
-                className='  w-fullsm:w-[48%] lg:flex-1 basis-[300px] 'key={card.id}>
+                className='  w-fullsm:w-[48%] lg:flex-1 basis-75 'key={card.id}>
 
-                <div className='w-full h-[250px] sm:h-[280px] md:h-[300px] relative -mb-10'>
+                <div className='w-full h-62.5 sm:h-70 md:h-75 relative -mb-10'>
                     <img
                         src={card.image}
                         width={card.imageWidth}
@@ -79,7 +79,7 @@ const Category = () => {
 
     return (
         <section>
-            <div className='max-w-[1400px] mx-auto px-4 sm:px-6 md:px-10 py-12 sm:py-16 md:py-20'>
+            <div className='max-w-350 mx-auto px-4 sm:px-6 md:px-10 py-12 sm:py-16 md:py-20'>
 
                 <Heading
                     highlight='Shop'
